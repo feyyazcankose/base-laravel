@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\Dashboard\AuthController;
+use App\Http\Controllers\Dashboard\RolePermissionController;
 use Illuminate\Support\Facades\Route;
 
 
