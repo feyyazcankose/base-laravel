@@ -14,7 +14,7 @@ return [
 
             'paths' => [
                 'use_absolute_path' => false,
-                'docs_json' => 'api-docs.json',
+                'docs_json' => 'config.json',
                 'docs_url' => '/api/documentation',
                 'annotations' => base_path('app'), // Annotations dizinini belirtin
             ],
