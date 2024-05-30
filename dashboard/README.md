@@ -11,7 +11,7 @@
 <span>
 </div>
 
-## Overview
+## Genel Bakış
 
 This is a starter template using the following stack:
 

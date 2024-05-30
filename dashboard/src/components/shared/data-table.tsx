@@ -130,7 +130,7 @@ export default function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Sonuç bulunamadı.
                 </TableCell>
               </TableRow>
             )}
@@ -142,13 +142,13 @@ export default function DataTable<TData, TValue>({
       <div className="flex flex-col items-center justify-end gap-2 space-x-2 py-4 sm:flex-row">
         <div className="flex w-full items-center justify-between">
           <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{' '}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+            {table.getFilteredSelectedRowModel().rows.length} /{' '}
+            {table.getFilteredRowModel().rows.length} satır(lar) seçildi.
           </div>
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
             <div className="flex items-center space-x-2">
               <p className="whitespace-nowrap text-sm font-medium">
-                Rows per page
+                Sayfa başına satır
               </p>
               <Select
                 value={`${table.getState().pagination.pageSize}`}
@@ -174,7 +174,7 @@ export default function DataTable<TData, TValue>({
         </div>
         <div className="flex w-full items-center justify-between gap-2 sm:justify-end">
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {table.getState().pagination.pageIndex + 1} of{' '}
+            Sayfa {table.getState().pagination.pageIndex + 1} /{' '}
             {table.getPageCount()}
           </div>
           <div className="flex items-center space-x-2">

@@ -13,7 +13,7 @@ import {
   TabsTrigger
 } from '@/components/ui/tabs.js';
 import Overview from './components/overview.js';
-import RecentSales from './components/recent-sales.js';
+import RecentSatışlar from './components/recent-sales.js';
 
 export default function DashboardPage() {
   return (
@@ -22,12 +22,12 @@ export default function DashboardPage() {
       <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">
-            Hi, Welcome back 👋
+            Merhaba, tekrar hoş geldiniz 👋
           </h2>
         </div>
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="overview">Genel Bakış</TabsTrigger>
             <TabsTrigger value="analytics" disabled>
               Analytics
             </TabsTrigger>
@@ -37,7 +37,7 @@ export default function DashboardPage() {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
-                    Total Revenue
+                    Toplam gelir
                   </CardTitle>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@ export default function DashboardPage() {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
-                    Subscriptions
+                    Abonelikler
                   </CardTitle>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +88,9 @@ export default function DashboardPage() {
               </Card>
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Sales</CardTitle>
+                  <CardTitle className="text-sm font-medium">
+                    Satışlar
+                  </CardTitle>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -113,7 +115,7 @@ export default function DashboardPage() {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
-                    Active Now
+                    Şimdi Aktif
                   </CardTitle>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +141,7 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
               <Card className="col-span-4">
                 <CardHeader>
-                  <CardTitle>Overview</CardTitle>
+                  <CardTitle>Genel Bakış</CardTitle>
                 </CardHeader>
                 <CardContent className="pl-2">
                   <Overview />
@@ -147,13 +149,13 @@ export default function DashboardPage() {
               </Card>
               <Card className="col-span-4 md:col-span-3">
                 <CardHeader>
-                  <CardTitle>Recent Sales</CardTitle>
+                  <CardTitle>Son Satışlar</CardTitle>
                   <CardDescription>
                     You made 265 sales this month.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <RecentSales />
+                  <RecentSatışlar />
                 </CardContent>
               </Card>
             </div>

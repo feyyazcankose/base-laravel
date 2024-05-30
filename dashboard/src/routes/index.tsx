@@ -31,11 +31,11 @@ export default function AppRouter() {
           index: true
         },
         {
-          path: 'student',
+          path: 'kullanicilar',
           element: <StudentPage />
         },
         {
-          path: 'student/details',
+          path: 'kullanicilar/detay',
           element: <StudentDetailPage />
         }
       ]
@@ -44,7 +44,7 @@ export default function AppRouter() {
 
   const publicRoutes = [
     {
-      path: '/login',
+      path: '/giris',
       element: <SignInPage />,
       index: true
     },
