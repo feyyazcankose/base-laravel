@@ -9,7 +9,6 @@ class EnsureTokenIsValid
 {
     public function handle($request, Closure $next)
     {
-        var_dump(JWTAuth::getToken());
         if (!$token = JWTAuth::getToken()) {
             return response()->json(['error' => 'Token not provided'], 401);
         }
