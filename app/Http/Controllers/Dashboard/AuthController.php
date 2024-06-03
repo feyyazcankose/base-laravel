@@ -38,7 +38,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return response()->json(compact('token'));
+        return response()->json(["access_token" => 'Bearer ' . $token]);
     }
 
     /**
@@ -65,7 +65,7 @@ class AuthController extends Controller
      *     path="/api/me",
      *     tags={"Dashboard > Auth"},
      *     summary="Get authenticated user details",
-     *     security={{"bearerAuth":{}}},
+     *     security="bearer",
      *     @OA\Response(
      *         response=200,
      *         description="User details",

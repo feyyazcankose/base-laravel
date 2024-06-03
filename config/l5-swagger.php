@@ -73,7 +73,7 @@ return [
             ],
             'security' => [
                 [
-                    'bearerAuth' => [],
+                    'Bearer' => []
                 ],
             ],
         ],
