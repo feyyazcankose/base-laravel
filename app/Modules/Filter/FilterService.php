@@ -6,7 +6,12 @@ use Carbon\Carbon;
 
 class FilterService
 {
-    protected $whereFilter = [];
+    public $whereFilter;
+
+    public function __construct()
+    {
+        $this->whereFilter = [];
+    }
 
     // Filter parse and items loop
     public function setFilter($filter, $softDelete = true)

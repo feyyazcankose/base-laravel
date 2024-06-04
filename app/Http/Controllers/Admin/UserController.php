@@ -39,16 +39,21 @@ class UserController extends Controller
     public function gets(Request $request)
     {
 
-        $options = json_decode($request->input('options'));
+        $options = [
+            "skip" => json_decode($request->input('skip')),
+            "take" => json_decode($request->input('take')),
+            "filter" => json_decode($request->input('filter')),
+            "sort" => json_decode($request->input('sort')),
+            "group" => json_decode($request->input('group')),
+        ];
+
         if ($options) {
-            if (is_array($options) && count($options) > 0) {
+            if (is_array($options["group"]) && count($options["group"]) > 0) {
                 return new FilterGroupDto($this->filterService->getGroups($options, new User, true));
             }
         }
-        $whereItems = $this->filterService->getWhereFilter($options['filter'] ?? null);
 
         $orderBy = ['created_at' => 'desc'];
-
         try {
             if (!empty($options['sort'])) {
                 $sortSplit = explode(',', $options['sort']);
@@ -72,10 +77,7 @@ class UserController extends Controller
             ->take($options['take'])
             ->get();
 
-
-
         $totalCount = User::count();
-
         $response = new UserListDto([
             'items' => $users->toArray(),
             'meta' => [
