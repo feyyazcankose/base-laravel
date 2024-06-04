@@ -5,6 +5,33 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/admins": {
+            "get": {
+                "summary": "Get paginated list of admins",
+                "operationId": "690793f4c53e2c3994be7c9a60812521",
+                "responses": {
+                    "200": {
+                        "description": "Successful responses"
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "summary": "Get paginated list of admins",
+                "operationId": "1fbdca4d106c3f04b94f85640630fa07",
+                "responses": {
+                    "200": {
+                        "description": "Successful responses"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/login": {
             "post": {
                 "tags": [
@@ -258,6 +285,159 @@
         }
     },
     "components": {
+        "schemas": {
+            "FilterGroupDto": {
+                "title": "Filter Group",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FilterGroupItemDto"
+                        }
+                    },
+                    "totalCount": {
+                        "type": "integer",
+                        "example": 100
+                    }
+                },
+                "type": "object"
+            },
+            "FilterGroupItemDto": {
+                "title": "Filter Group Item",
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "example": "Konutkonfor"
+                    }
+                },
+                "type": "object"
+            },
+            "FilterMetaDto": {
+                "title": "Filter Meta",
+                "properties": {
+                    "totalItems": {
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "itemCount": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "itemsPerPage": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "totalPages": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "currentPage": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "AdminDto": {
+                "title": "Admin",
+                "required": [
+                    "id",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "phone",
+                    "phone_code",
+                    "account_status",
+                    "created_at"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "svm2yb3aeq"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "example": "feyyaz"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "example": "Admin"
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "feyyaz"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "dev@feyyaz.com.tr"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "905429322605"
+                    },
+                    "phone_code": {
+                        "type": "string",
+                        "example": "+90"
+                    },
+                    "account_status": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "parameters": {
+            "skip": {
+                "name": "skip",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "example": 1
+                }
+            },
+            "take": {
+                "name": "take",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "integer",
+                    "example": 10
+                }
+            },
+            "sort": {
+                "name": "sort",
+                "in": "query",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "example": "yourSelector,asc"
+                }
+            },
+            "filter": {
+                "name": "filter",
+                "in": "query",
+                "description": "Array string",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "group": {
+                "name": "group",
+                "in": "query",
+                "description": "Array object",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "apiKey",
