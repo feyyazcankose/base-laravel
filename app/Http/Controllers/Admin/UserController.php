@@ -23,6 +23,8 @@ class UserController extends Controller
      * @OA\Get(
      *     path="/api/users",
      *     summary="Get list of users",
+     *     tags={"Dashboard > User"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(ref="#/components/parameters/skip"),
      *     @OA\Parameter(ref="#/components/parameters/take"),
      *     @OA\Parameter(ref="#/components/parameters/sort"),
@@ -36,14 +38,17 @@ class UserController extends Controller
      */
     public function gets(Request $request)
     {
-        $options = json_decode($request->input('options'));
-        if (count($options)) {
-            return new FilterGroupDto($this->filterService->getGroups($options, new User, true));
-        }
 
+        $options = json_decode($request->input('options'));
+        if ($options) {
+            if (is_array($options) && count($options) > 0) {
+                return new FilterGroupDto($this->filterService->getGroups($options, new User, true));
+            }
+        }
         $whereItems = $this->filterService->getWhereFilter($options['filter'] ?? null);
 
         $orderBy = ['created_at' => 'desc'];
+
         try {
             if (!empty($options['sort'])) {
                 $sortSplit = explode(',', $options['sort']);
@@ -53,19 +58,29 @@ class UserController extends Controller
             // If there is an error, we use the default order by
         }
 
-        $admins = User::where($whereItems)
-            ->orderBy(key($orderBy), current($orderBy))
+        if (!@$options['skip']) {
+            $options['skip'] = 1;
+        }
+
+        if (!@$options['take']) {
+            $options['take'] = 10;
+        }
+
+
+        $users = User::orderBy(key($orderBy), current($orderBy))
             ->skip(($options['skip'] - 1) * $options['take'])
-            ->take($options['take'] ?? 10)
+            ->take($options['take'])
             ->get();
 
-        $totalCount = User::where($whereItems)->count();
+
+
+        $totalCount = User::count();
 
         $response = new UserListDto([
-            'items' => $admins,
+            'items' => $users->toArray(),
             'meta' => [
                 'totalItems' => $totalCount,
-                'itemCount' => $admins->count(),
+                'itemCount' => $users->count(),
                 'itemsPerPage' => $options['take'],
                 'totalPages' => ceil($totalCount / $options['take']),
                 'currentPage' => $options['skip'],

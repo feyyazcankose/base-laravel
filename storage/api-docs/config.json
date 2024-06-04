@@ -5,17 +5,6 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/admins": {
-            "get": {
-                "summary": "Get paginated list of admins",
-                "operationId": "398b0e894c830dc1b07ba6302b11c1b5",
-                "responses": {
-                    "200": {
-                        "description": "Successful responses"
-                    }
-                }
-            }
-        },
         "/api/login": {
             "post": {
                 "tags": [
@@ -269,6 +258,9 @@
         },
         "/api/users": {
             "get": {
+                "tags": [
+                    "Dashboard > User"
+                ],
                 "summary": "Get list of users",
                 "operationId": "114e1fe80eb613816a1ce577a3ccf441",
                 "parameters": [
@@ -292,7 +284,12 @@
                     "200": {
                         "description": "Successfully logged out"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },

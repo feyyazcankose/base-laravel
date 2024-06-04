@@ -68,37 +68,13 @@ class UserDto
     /**
      * @var string
      */
-    public $first_name;
-
-    /**
-     * @var string
-     */
-    public $last_name;
-
-    /**
-     * @var string|null
-     */
-    public $image;
+    public $name;
 
     /**
      * @var string
      */
     public $email;
 
-    /**
-     * @var string
-     */
-    public $phone;
-
-    /**
-     * @var string
-     */
-    public $phone_code;
-
-    /**
-     * @var bool
-     */
-    public $account_status;
 
     /**
      * @var string
@@ -108,13 +84,8 @@ class UserDto
     public function __construct($admin)
     {
         $this->id = $admin['id'] ?? null;
-        $this->first_name = $admin['first_name'] ?? 'Kullanıcı';
-        $this->last_name = $admin['last_name'] ?? 'Kullanıcı';
-        $this->image = $admin['image'] ?? null;
+        $this->name = $admin['name'] ?? null;
         $this->email = $admin['email'] ?? null;
-        $this->phone = $admin['phone'] ?? null;
-        $this->phone_code = $admin['phone_code'] ?? null;
-        $this->account_status = $admin['account_status'] ?? null;
         $this->created_at = $admin['created_at'] ?? null;
     }
 }
