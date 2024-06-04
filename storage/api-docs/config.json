@@ -11,7 +11,7 @@
                     "Dashboard > Auth"
                 ],
                 "summary": "User login",
-                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "operationId": "ae57828047478c9006ddf44336313723",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -53,7 +53,7 @@
                     "Dashboard > Auth"
                 ],
                 "summary": "User logout",
-                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "operationId": "d66ecc0b487d2fe47fedc84cca5df9cc",
                 "responses": {
                     "200": {
                         "description": "Successfully logged out"
@@ -72,7 +72,7 @@
                     "Dashboard > Auth"
                 ],
                 "summary": "Get authenticated user details",
-                "operationId": "9d9bc556f927575aa492a88c28fe5908",
+                "operationId": "96b0290df420ceeb887f1fe3561b1137",
                 "responses": {
                     "200": {
                         "description": "User details",
@@ -99,11 +99,7 @@
                         }
                     }
                 },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                "security": "bearer"
             }
         },
         "/api/create-role": {
@@ -112,7 +108,7 @@
                     "Dashboard > Role Management"
                 ],
                 "summary": "Create a new role",
-                "operationId": "0be74d25041e979dc6da19d9c0730204",
+                "operationId": "95d467a5e214e4ccabf2de85ef5b4556",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -148,7 +144,7 @@
                     "Dashboard > Role Management"
                 ],
                 "summary": "Create a new permission",
-                "operationId": "fecdd1a055c1f63451c9fdbe4ac3cc70",
+                "operationId": "5b5e48d56019e83b0a7641618a927dad",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -184,7 +180,7 @@
                     "Dashboard > Role Management"
                 ],
                 "summary": "Assign a role to a user",
-                "operationId": "702008c2323786c7b4dba00d9d2857b1",
+                "operationId": "e68aa1bfeb02f45960f9344a517dafbb",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -225,7 +221,7 @@
                     "Dashboard > Role Management"
                 ],
                 "summary": "Assign a permission to a role",
-                "operationId": "ff6f6917bee0c2abf5c8bfa3f8916b9d",
+                "operationId": "6547154bc818ff37c8aa66885a5c3b75",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -273,7 +269,7 @@
     },
     "security": [
         {
-            "bearerAuth": []
+            "Bearer": []
         }
     ]
 }
