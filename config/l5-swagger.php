@@ -143,17 +143,7 @@ return [
             'required' => false,
             'schema' => [
                 'type' => 'string',
-                'example' => '[
-                    {"id":"first_name","type":"SELECT","selecteds":["KonutKonfor","Feyyaz Can"]},
-                    {"id":"last_name","type":"SELECT","selecteds":["Kör"]},
-                    {"id":"amount","type":"NUMBER","min":0,"max":10000},
-                    {"id":"created_at","type":"DATE","min":2012,"max":2022},
-                    {"id":"global_search","type":"SEARCH","value":"Denem","columns":[
-                       {"id":"first_name","type":"string"},
-                       {"id":"last_name","type":"string"},
-                       {"id":"id","type":"number"}
-                    ]}
-                 ]',
+                'example' => "",
             ],
         ],
         'group' => [
@@ -163,7 +153,7 @@ return [
             'required' => false,
             'schema' => [
                 'type' => 'string',
-                'example' => '[{"selector":"status","search":"hello","filter":[{"id":"last_name","type":"SELECT","selecteds":["Kör"]}]}]',
+                'example' => "",
             ],
         ],
     ],

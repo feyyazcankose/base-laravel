@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filter\Decorator;
+namespace App\Modules\Filter\Decorator;
 
 use OpenApi\Annotations as OA;
 

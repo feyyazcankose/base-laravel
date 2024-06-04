@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\User\Dtos;
+namespace App\Dtos\User;
 
 
 use OpenApi\Annotations as OA;

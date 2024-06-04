@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin\User;
+namespace App\Http\Controllers\Admin;
 
-use App\Filter\Dtos\FilterGroupDto;
-use App\Filter\FilterService;
-use App\Http\Controllers\Admin\User\Dtos\UserListDto;
+use App\Modules\Filter\Dtos\FilterGroupDto;
+use App\Modules\Filter\FilterService;
 use App\Http\Controllers\Controller;
+use App\Dtos\User\UserListDto;
 use Illuminate\Http\Request;
 use App\Models\User; // Assuming you have a User model
 use OpenApi\Annotations as OA;
@@ -22,46 +22,15 @@ class UserController extends Controller
     /**
      * @OA\Get(
      *     path="/api/users",
-     *     summary="Get paginated list of admins",
-     *     security={{"bearerAuth":{}}},
+     *     summary="Get list of users",
+     *     @OA\Parameter(ref="#/components/parameters/skip"),
+     *     @OA\Parameter(ref="#/components/parameters/take"),
+     *     @OA\Parameter(ref="#/components/parameters/sort"),
+     *     @OA\Parameter(ref="#/components/parameters/group"),
+     *     @OA\Parameter(ref="#/components/parameters/filter"),
      *     @OA\Response(
      *         response=200,
-     *         description="Successful responses",
-     *     )
-     * @OA\Parameter(
-     *     name="skip",
-     *     in="query",
-     *     required=false,
-     *     @OA\Schema(type="integer", example=1)
-     * )
-     * @OA\Parameter(
-     *     name="take",
-     *     in="query",
-     *     required=false,
-     *     @OA\Schema(type="integer", example=10)
-     * )
-     * @OA\Parameter(
-     *     name="sort",
-     *     in="query",
-     *     required=false,
-     *     @OA\Schema(type="string", example="yourSelector,asc")
-     * )
-     * @OA\Parameter(
-     *     name="filter",
-     *     in="query",
-     *     required=false,
-     *     description="Array string",
-     *     @OA\Schema(
-     *         type="string",
-     *     )
-     * )
-     * @OA\Parameter(
-     *     name="group",
-     *     in="query",
-     *     required=false,
-     *     description="Array object",
-     *     @OA\Schema(
-     *         type="string",
+     *         description="Successfully logged out"
      *     )
      * )
      */

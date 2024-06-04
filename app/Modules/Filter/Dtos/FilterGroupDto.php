@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filter\Dtos;
+namespace App\Modules\Filter\Dtos;
 
 use OpenApi\Annotations as OA;
 

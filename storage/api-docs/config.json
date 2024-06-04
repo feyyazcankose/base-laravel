@@ -8,28 +8,12 @@
         "/api/admins": {
             "get": {
                 "summary": "Get paginated list of admins",
-                "operationId": "690793f4c53e2c3994be7c9a60812521",
+                "operationId": "398b0e894c830dc1b07ba6302b11c1b5",
                 "responses": {
                     "200": {
                         "description": "Successful responses"
                     }
                 }
-            }
-        },
-        "/api/users": {
-            "get": {
-                "summary": "Get paginated list of admins",
-                "operationId": "1fbdca4d106c3f04b94f85640630fa07",
-                "responses": {
-                    "200": {
-                        "description": "Successful responses"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
             }
         },
         "/api/login": {
@@ -38,7 +22,7 @@
                     "Dashboard > Auth"
                 ],
                 "summary": "User login",
-                "operationId": "ae57828047478c9006ddf44336313723",
+                "operationId": "a871fffd623cec921ae2402ed39073d4",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -80,7 +64,7 @@
                     "Dashboard > Auth"
                 ],
                 "summary": "User logout",
-                "operationId": "d66ecc0b487d2fe47fedc84cca5df9cc",
+                "operationId": "09065a38576bef522e8d1e034e934f6f",
                 "responses": {
                     "200": {
                         "description": "Successfully logged out"
@@ -99,7 +83,7 @@
                     "Dashboard > Auth"
                 ],
                 "summary": "Get authenticated user details",
-                "operationId": "96b0290df420ceeb887f1fe3561b1137",
+                "operationId": "70e7e6544dfe8375708bed63ac1ae549",
                 "responses": {
                     "200": {
                         "description": "User details",
@@ -135,7 +119,7 @@
                     "Dashboard > Role Management"
                 ],
                 "summary": "Create a new role",
-                "operationId": "95d467a5e214e4ccabf2de85ef5b4556",
+                "operationId": "cea1224bfc44e7c26eba25956c64ef23",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -171,7 +155,7 @@
                     "Dashboard > Role Management"
                 ],
                 "summary": "Create a new permission",
-                "operationId": "5b5e48d56019e83b0a7641618a927dad",
+                "operationId": "66399f796c99cc18284eaf223977cdbb",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -207,7 +191,7 @@
                     "Dashboard > Role Management"
                 ],
                 "summary": "Assign a role to a user",
-                "operationId": "e68aa1bfeb02f45960f9344a517dafbb",
+                "operationId": "7602e6eae16eb270e3cbf2c96b733b74",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -248,7 +232,7 @@
                     "Dashboard > Role Management"
                 ],
                 "summary": "Assign a permission to a role",
-                "operationId": "6547154bc818ff37c8aa66885a5c3b75",
+                "operationId": "ff16ee07aff14393c79eafb9a27d81c6",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -282,62 +266,38 @@
                     }
                 }
             }
+        },
+        "/api/users": {
+            "get": {
+                "summary": "Get list of users",
+                "operationId": "114e1fe80eb613816a1ce577a3ccf441",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/skip"
+                    },
+                    {
+                        "$ref": "#/components/parameters/take"
+                    },
+                    {
+                        "$ref": "#/components/parameters/sort"
+                    },
+                    {
+                        "$ref": "#/components/parameters/group"
+                    },
+                    {
+                        "$ref": "#/components/parameters/filter"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully logged out"
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
-            "FilterGroupDto": {
-                "title": "Filter Group",
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/FilterGroupItemDto"
-                        }
-                    },
-                    "totalCount": {
-                        "type": "integer",
-                        "example": 100
-                    }
-                },
-                "type": "object"
-            },
-            "FilterGroupItemDto": {
-                "title": "Filter Group Item",
-                "properties": {
-                    "key": {
-                        "type": "string",
-                        "example": "Konutkonfor"
-                    }
-                },
-                "type": "object"
-            },
-            "FilterMetaDto": {
-                "title": "Filter Meta",
-                "properties": {
-                    "totalItems": {
-                        "type": "integer",
-                        "example": 100
-                    },
-                    "itemCount": {
-                        "type": "integer",
-                        "example": 10
-                    },
-                    "itemsPerPage": {
-                        "type": "integer",
-                        "example": 10
-                    },
-                    "totalPages": {
-                        "type": "integer",
-                        "example": 10
-                    },
-                    "currentPage": {
-                        "type": "integer",
-                        "example": 1
-                    }
-                },
-                "type": "object"
-            },
             "AdminDto": {
                 "title": "Admin",
                 "required": [
@@ -386,6 +346,58 @@
                     "created_at": {
                         "type": "string",
                         "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "FilterGroupDto": {
+                "title": "Filter Group",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FilterGroupItemDto"
+                        }
+                    },
+                    "totalCount": {
+                        "type": "integer",
+                        "example": 100
+                    }
+                },
+                "type": "object"
+            },
+            "FilterGroupItemDto": {
+                "title": "Filter Group Item",
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "example": "Konutkonfor"
+                    }
+                },
+                "type": "object"
+            },
+            "FilterMetaDto": {
+                "title": "Filter Meta",
+                "properties": {
+                    "totalItems": {
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "itemCount": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "itemsPerPage": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "totalPages": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "currentPage": {
+                        "type": "integer",
+                        "example": 1
                     }
                 },
                 "type": "object"

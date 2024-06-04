@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -10,7 +10,7 @@ use Spatie\Permission\Models\Permission;
 
 class RolePermissionController extends Controller
 {
-   /**
+    /**
      * @OA\Post(
      *     path="/api/create-role",
      *     tags={"Dashboard > Role Management"},
@@ -126,4 +126,3 @@ class RolePermissionController extends Controller
         return response()->json(['message' => 'Permission assigned successfully']);
     }
 }
-

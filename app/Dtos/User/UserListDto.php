@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\User\Dtos;
+namespace App\Dtos\User;
 
 use OpenApi\Annotations as OA;
 
@@ -17,7 +17,7 @@ use OpenApi\Annotations as OA;
 class UserListDto
 {
     /**
-     * @var AdminDto[]
+     * @var UserDto[]
      */
     public $items;
 
