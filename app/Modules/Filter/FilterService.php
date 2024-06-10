@@ -2,38 +2,94 @@
 
 namespace App\Modules\Filter;
 
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
-class FilterService
+class FilterService extends Controller
 {
-    public $whereFilter;
+    private $whereFilter = [];
+    public $softDelete = false;
+    public $skip = 1;
+    public $take = 10;
 
-    public function __construct()
+    // Get dynamic group list
+    public function getGroups(Request $request, $model)
     {
-        $this->whereFilter = [];
+        $group = json_decode($request->group, true);
+
+        if (empty($group)) {
+            return response()->json([
+                'items' => [],
+                'totalCount' => 0
+            ]);
+        }
+
+        // Filter Group Where
+        $where = null;
+        $selector = $this->selector($group[0]['selector'], true, 'select');
+        if (@$group[0]['search']) {
+            $where = $this->selector(
+                $group[0]['selector'],
+                $group[0]['search'] ?? null,
+                'where',
+                'insensitive'
+            );
+        }
+
+        if (isset($group[0]['filter'])) {
+            $this->setFilter(json_encode($group[0]['filter']));
+        }
+
+        $query = $model::select($selector);
+
+        if ($where) {
+            $query->where(...$where);
+        }
+
+        if ($request->has('skip') && $request->has('take')) {
+            $query->skip(($this->skip - 1) * $this->take)
+                ->take($this->take);
+        }
+
+        // Soft delete kontrolü
+        if ($this->softDelete ?? true) {
+            $query->whereNull('deleted_at');
+        }
+
+        $items = $query->get();
+        $totalCount = $model::count();
+
+        // Benzersiz değerlerin alınması
+        $uniques = $this->getUniqueValues($items, $group[0]['selector']);
+
+        return [
+            'items' => $uniques,
+            'totalCount' => $totalCount
+        ];
     }
 
-    // Filter parse and items loop
-    public function setFilter($filter, $softDelete = true)
+    // Set filter method
+    public function setFilter($filter)
     {
         $items = json_decode($filter ?? '[]', true);
         $andArr = [];
-
         foreach ($items as $item) {
             switch ($item['type']) {
                 case 'SEARCH':
                     $orArrSearch = [];
                     foreach ($item['columns'] as $column) {
                         if (is_numeric($item['value']) && $column['type'] === 'number') {
-                            $orArrSearch[] = [$column['id'], '=', (int) $item['value']];
+                            $orArrSearch[] = [$column['id'], '=', (int)$item['value']];
                         } elseif ($column['type'] === 'string') {
-                            $orArrSearch[] = [$column['id'], 'ILIKE', '%' . $item['value'] . '%'];
+                            $orArrSearch[] = [$column['id'], 'LIKE', '%' . $item['value'] . '%'];
                         } elseif (in_array($item['value'], ['true', 'false']) && $column['type'] === 'boolean') {
                             $orArrSearch[] = [$column['id'], '=', $item['value'] === 'true'];
                         }
                     }
                     $andArr[] = function ($query) use ($orArrSearch) {
-                        $query->orWhere($orArrSearch);
+                        foreach ($orArrSearch as $orItem) {
+                            $query->orWhere($orItem[0], $orItem[1], $orItem[2]);
+                        }
                     };
                     break;
                 case 'SELECT':
@@ -43,11 +99,15 @@ class FilterService
                     }
                     if ($item['operation'] === 'NOT_EQUAL') {
                         $andArr[] = function ($query) use ($orArr) {
-                            $query->whereNot($orArr);
+                            foreach ($orArr as $orItem) {
+                                $query->where($orItem[0], '!=', $orItem[2]);
+                            }
                         };
                     } else {
                         $andArr[] = function ($query) use ($orArr) {
-                            $query->orWhere($orArr);
+                            foreach ($orArr as $orItem) {
+                                $query->orWhere($orItem[0], $orItem[1], $orItem[2]);
+                            }
                         };
                     }
                     break;
@@ -56,93 +116,80 @@ class FilterService
                     $andArr[] = [$item['id'], '<=', $item['max'] ?? 0];
                     break;
                 case 'DATE':
-                    $andArr[] = [$item['id'], '>=', new Carbon($item['min'] ?? 'now')];
-                    $andArr[] = [$item['id'], '<=', new Carbon($item['max'] ?? 'now')];
+                    $andArr[] = [$item['id'], '>=', $item['min'] ? new \DateTime($item['min']) : new \DateTime()];
+                    $andArr[] = [$item['id'], '<=', $item['max'] ? new \DateTime($item['max']) : new \DateTime()];
                     break;
                 default:
                     break;
             }
         }
-
-        if ($softDelete) {
-            $this->whereFilter = function ($query) use ($andArr) {
-                $query->where($andArr)->whereNull('deleted_at');
-            };
+        if ($this->softDelete) {
+            $this->whereFilter = array_merge($andArr, [['deleted_at', '=', null]]);
         } else {
-            $this->whereFilter = function ($query) use ($andArr) {
-                $query->where($andArr);
-            };
+            $this->whereFilter = $andArr;
         }
     }
 
     // Get where items
-    public function getWhereFilter($filter, $softDelete = true)
+    public function getWhereFilter($options, $softDelete = true)
     {
-        $this->setFilter($filter, $softDelete);
+        $this->setFilter(@$options["filter"], $softDelete);
         $localFilter = $this->whereFilter;
         $this->whereFilter = [];
-        return $localFilter;
+
+        return ["where" => $localFilter, "orderBy" => $this->getOrderBy($options)];
     }
 
     // Get selector object
     public function selector($selector, $value, $type = 'where', $mode = null)
     {
         if ($type === 'select') {
-            // Eloquent does not require special handling for select
-            return [$selector => $value];
+            return [$selector];
         } elseif ($type === 'where') {
-            if ($mode === 'insensitive') {
-                return [$selector, 'ILIKE', '%' . $value . '%'];
-            } else {
-                return [$selector, '=', $value];
-            }
+            return $mode ? [$selector, 'LIKE', '%' . $value . '%'] : [$selector, '=', $value];
         } elseif ($type === 'order') {
-            return [$selector => $value === 'asc' ? 'asc' : 'desc'];
+            return [$selector, $value === 'asc' ? 'asc' : 'desc'];
         }
     }
 
     // Get unique values
     public function getUniqueValues($data, $selector)
     {
-        $uniqueValues = collect($data)->pluck($selector)->unique();
-        return $uniqueValues->values()->all();
+        $uniqueValues = [];
+        foreach ($data as $item) {
+            $selectedValue = $this->getValueBySelector($item, $selector);
+            if ($selectedValue && !in_array($selectedValue, $uniqueValues)) {
+                $uniqueValues[] = $selectedValue;
+            }
+        }
+        return $uniqueValues;
     }
 
-    // Get dynamic group list
-    public function getGroups($options, $model, $softDelete = true)
+    // Get selector in value
+    public function getValueBySelector($object, $selector)
     {
-        $group = json_decode($options['group'], true);
-        if (count($group)) {
-            $selector = $this->selector($group[0]['selector'], true, 'select');
-            $where = $this->selector($group[0]['selector'], $group[0]['search'], 'where', 'insensitive');
-
-            if ($group[0]['filter']) {
-                $this->setFilter(json_encode($group[0]['filter']));
+        $selectors = explode('.', $selector);
+        $value = $object;
+        foreach ($selectors as $prop) {
+            if (!isset($value->$prop)) {
+                return null;
             }
+            $value = $value->$prop;
+        }
+        return $value;
+    }
 
-            $query = $model::select($selector)->skip(($options['skip'] - 1) * $options['take'])->take($options['take']);
-
-            if ($where) {
-                $query->where($where)->where($this->whereFilter);
-            }
-
-            if ($softDelete) {
-                $query->whereNull('deleted_at');
-            }
-
-            $items = $query->get();
-            $totalCounts = $model::whereNull('deleted_at')->count();
-
-            $uniques = $this->getUniqueValues($items, $group[0]['selector']);
-            return [
-                'items' => $uniques,
-                'totalCount' => $totalCounts,
-            ];
+    //Get order by
+    private function getOrderBy($options)
+    {
+        $orderBy = [];
+        try {
+            $sortSplit = explode(',', @$options['sort']);
+            $orderBy = $this->selector($sortSplit[0], $sortSplit[1], 'order');
+        } catch (\Exception $e) {
+            $orderBy = ['created_at', 'DESC'];
         }
 
-        return [
-            'items' => [],
-            'totalCount' => 0,
-        ];
+        return  $orderBy;
     }
 }

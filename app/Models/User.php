@@ -10,6 +10,11 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasRoles;
 
+    // protected $fillable = [
+    //     'id', 'name', "email", 'created_at', 'role_id'
+    // ];
+
+
     // JWTSubject interface methods
     public function getJWTIdentifier()
     {

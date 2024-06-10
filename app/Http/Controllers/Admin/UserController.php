@@ -2,21 +2,26 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Modules\Filter\Dtos\FilterGroupDto;
-use App\Modules\Filter\FilterService;
 use App\Http\Controllers\Controller;
-use App\Dtos\User\UserListDto;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\User; // Assuming you have a User model
+use App\Modules\Filter\FilterService;
 use OpenApi\Annotations as OA;
 
 class UserController extends Controller
 {
     protected $filterService;
 
-    public function __construct(FilterService $filterService)
+    public function __construct(FilterService $filterService, Request $request)
     {
         $this->filterService = $filterService;
+        if (@$request->skip) {
+            $this->filterService->skip = intval($request->skip);
+        }
+
+        if (@$request->take) {
+            $this->filterService->take = intval($request->take);
+        }
     }
 
     /**
@@ -38,57 +43,36 @@ class UserController extends Controller
      */
     public function gets(Request $request)
     {
+        $model = new User();
+        $options = $request->all();
 
-        $options = [
-            "skip" => json_decode($request->input('skip')),
-            "take" => json_decode($request->input('take')),
-            "filter" => json_decode($request->input('filter')),
-            "sort" => json_decode($request->input('sort')),
-            "group" => json_decode($request->input('group')),
-        ];
-
-        if ($options) {
-            if (is_array($options["group"]) && count($options["group"]) > 0) {
-                return new FilterGroupDto($this->filterService->getGroups($options, new User, true));
-            }
+        if (!empty($options['group'])) {
+            return response()->json(
+                $this->filterService->getGroups($request, $model)
+            );
         }
 
-        $orderBy = ['created_at' => 'desc'];
-        try {
-            if (!empty($options['sort'])) {
-                $sortSplit = explode(',', $options['sort']);
-                $orderBy = $this->filterService->selector($sortSplit[0], $sortSplit[1], 'order');
-            }
-        } catch (\Exception $error) {
-            // If there is an error, we use the default order by
-        }
+        $f = $this->filterService->getWhereFilter($options);
+        $where = $f["where"];
+        $orderBy = $f["orderBy"];
 
-        if (!@$options['skip']) {
-            $options['skip'] = 1;
-        }
+        $query = $model::where(...$where)
+            ->orderBy(...$orderBy)
+            ->skip(($this->filterService->skip - 1) * $this->filterService->take)
+            ->take($this->filterService->take);
 
-        if (!@$options['take']) {
-            $options['take'] = 10;
-        }
+        $items = $query->get(['id', 'name', "email", 'created_at', 'role_id']);
+        $totalCount = $model::where(...$where)->count();
 
-
-        $users = User::orderBy(key($orderBy), current($orderBy))
-            ->skip(($options['skip'] - 1) * $options['take'])
-            ->take($options['take'])
-            ->get();
-
-        $totalCount = User::count();
-        $response = new UserListDto([
-            'items' => $users->toArray(),
+        return response()->json([
+            'items' => $items,
             'meta' => [
                 'totalItems' => $totalCount,
-                'itemCount' => $users->count(),
-                'itemsPerPage' => $options['take'],
-                'totalPages' => ceil($totalCount / $options['take']),
-                'currentPage' => $options['skip'],
+                'itemCount' => $items->count(),
+                'itemsPerPage' => (int) $this->filterService->take,
+                'totalPages' => ceil($totalCount / (int) $this->filterService->take),
+                'currentPage' => (int) $this->filterService->skip,
             ],
         ]);
-
-        return response()->json($response);
     }
 }
