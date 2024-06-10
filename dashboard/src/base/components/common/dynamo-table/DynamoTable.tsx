@@ -8,7 +8,6 @@ import {
     PopoverContent,
     PopoverTrigger,
     Select,
-    Selection,
     SelectItem,
     Spinner,
     Switch,
@@ -44,6 +43,7 @@ import moment from "moment";
 type DynamoTableProps = {
     title: string;
     columns: IColumn[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     rows: any[]; // vague type
     loadStatus: FetchStatus;
     meta: TableMeta;
@@ -172,7 +172,9 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
             if (filterChain.some((filter) => filter.id === "global_search")) {
                 setFilterChain((prev) =>
                     prev.map((filter) =>
-                        filter.id === "global_search" ? globalSearchFilter : filter
+                        filter.id === "global_search"
+                            ? globalSearchFilter
+                            : filter
                     )
                 );
             } else {
@@ -194,6 +196,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
         navigate(path);
     }, [filterChain, sort]);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const renderOperations = (operations: IOperation[], row: any) => {
         return (
             <div className="flex gap-2">
@@ -201,12 +204,17 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                     (operation) =>
                         hasPermission(operation.role as string) &&
                         checkConditions(operation.conditions || [], row) && (
-                            <Tooltip content={operation.text} key={operation.name}>
+                            <Tooltip
+                                content={operation.text}
+                                key={operation.name}
+                            >
                                 <Button
                                     size="sm"
                                     color="default"
                                     isIconOnly
-                                    onClick={() => operation.handle(row.id, row)}
+                                    onClick={() =>
+                                        operation.handle(row.id, row)
+                                    }
                                 >
                                     {operation.icon}
                                 </Button>
@@ -253,7 +261,11 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                             isClearable
                             placeholder="Search..."
                             startContent={
-                                <Icon icon="uil:search" width="1.2rem" height="1.2rem" />
+                                <Icon
+                                    icon="uil:search"
+                                    width="1.2rem"
+                                    height="1.2rem"
+                                />
                             }
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
@@ -270,7 +282,11 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                                     navigate(pathname);
                                 }}
                             >
-                                <Icon icon="tabler:filter-x" width="1.2rem" height="1.2rem" />
+                                <Icon
+                                    icon="tabler:filter-x"
+                                    width="1.2rem"
+                                    height="1.2rem"
+                                />
                             </Button>
                         </Tooltip>
 
@@ -295,14 +311,21 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                                                 defaultSelected
                                                 size="sm"
                                                 isSelected={localColumns.some(
-                                                    (localColumn) => localColumn.key === column.key
+                                                    (localColumn) =>
+                                                        localColumn.key ===
+                                                        column.key
                                                 )}
                                                 onValueChange={(value) =>
-                                                    handleColumnVisibilityChange(value, column)
+                                                    handleColumnVisibilityChange(
+                                                        value,
+                                                        column
+                                                    )
                                                 }
                                                 key={column.key ?? column.label}
                                             >
-                                                {column.label.length ? column.label : column.type}
+                                                {column.label.length
+                                                    ? column.label
+                                                    : column.type}
                                             </Switch>
                                         ))}
                                     </div>
@@ -312,12 +335,9 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                     </div>
                 </div>
             }
-            classNames={
-                {
-                    
-                    wrapper: "fancy-scrollbar",
-                }
-            }
+            classNames={{
+                wrapper: "fancy-scrollbar",
+            }}
         >
             <TableHeader columns={localColumns}>
                 {localColumns.map((column) => (
@@ -342,53 +362,91 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                 ))}
             </TableHeader>
             <TableBody
-                loadingState={loadStatus === FetchStatus.LOADING ? "loading" : "idle"}
+                loadingState={
+                    loadStatus === FetchStatus.LOADING ? "loading" : "idle"
+                }
                 loadingContent={<Spinner />}
                 items={rows}
             >
                 {(item) => (
                     <TableRow key={item.id || item.key}>
                         {localColumns.map((column) => {
-                            if (column.type === EColumnType.OPERATIONS && column.operations) {
+                            if (
+                                column.type === EColumnType.OPERATIONS &&
+                                column.operations
+                            ) {
                                 return (
                                     <TableCell key={column.label}>
-                                        {renderOperations(column.operations, item)}
+                                        {renderOperations(
+                                            column.operations,
+                                            item
+                                        )}
                                     </TableCell>
                                 );
                             }
 
-                            let value = findValueByKey(item, String(column.key));
+                            let value = findValueByKey(
+                                item,
+                                String(column.key)
+                            );
                             if (column.customCell) {
                                 value = column.customCell(item);
                             }
                             switch (column?.type) {
                                 case EColumnType.CHIP:
                                     return (
-                                        <TableCell key={column.key ?? column.label}>
+                                        <TableCell
+                                            key={column.key ?? column.label}
+                                        >
                                             <Chip
-                                                color={column.config?.chip?.color[value]}
-                                                variant={column.config?.chip?.variant}
+                                                color={
+                                                    column.config?.chip?.color[
+                                                        value
+                                                    ]
+                                                }
+                                                variant={
+                                                    column.config?.chip?.variant
+                                                }
                                                 size={column.config?.chip?.size}
                                             >
-                                                {column.config?.chip?.text[value]}
+                                                {
+                                                    column.config?.chip?.text[
+                                                        value
+                                                    ]
+                                                }
                                             </Chip>
                                         </TableCell>
                                     );
                                 case EColumnType.DATE:
                                     return (
-                                        <TableCell key={column.key ?? column.label}>
-                                            {moment(value).format(column.config?.date?.format)}
+                                        <TableCell
+                                            key={column.key ?? column.label}
+                                        >
+                                            {moment(value).format(
+                                                column.config?.date?.format
+                                            )}
                                         </TableCell>
                                     );
                                 case EColumnType.IMAGE:
                                     return (
-                                        <TableCell key={column.key ?? column.label}>
-                                            <Avatar radius={column.config?.avatar?.radius} src={value} alt={column.label} />
+                                        <TableCell
+                                            key={column.key ?? column.label}
+                                        >
+                                            <Avatar
+                                                radius={
+                                                    column.config?.avatar
+                                                        ?.radius
+                                                }
+                                                src={value}
+                                                alt={column.label}
+                                            />
                                         </TableCell>
                                     );
                                 default:
                                     return (
-                                        <TableCell key={column.key ?? column.label}>
+                                        <TableCell
+                                            key={column.key ?? column.label}
+                                        >
                                             {value}
                                         </TableCell>
                                     );

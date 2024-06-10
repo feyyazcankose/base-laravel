@@ -1,10 +1,13 @@
 import { Quill } from "react-quill";
 
-export function undoChange() {
-    window.Quill.history.undo();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function undoChange(quill: any) {
+    quill.history.undo();
 }
-export function redoChange() {
-    window.Quill.history.redo();
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function redoChange(quill: any) {
+    quill.history.redo();
 }
 
 const Size = Quill.import("formats/size");
@@ -18,7 +21,6 @@ Font.whitelist = [
     "courier-new",
     "georgia",
     "helvetica",
-    "lucida"
+    "lucida",
 ];
 Quill.register(Font, true);
-

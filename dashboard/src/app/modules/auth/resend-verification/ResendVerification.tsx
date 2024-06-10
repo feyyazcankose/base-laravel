@@ -1,9 +1,5 @@
-import React from 'react'
-
 function ResendVerification() {
-  return (
-    <div>ResendVerification</div>
-  )
+    return <div>ResendVerification</div>;
 }
 
-export default ResendVerification
+export default ResendVerification;

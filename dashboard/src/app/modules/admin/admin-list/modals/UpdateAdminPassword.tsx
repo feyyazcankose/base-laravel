@@ -2,7 +2,6 @@ import { useFormik } from "formik";
 import React from "react";
 import { IAdminUpdatePasswordRequest } from "../../core/models/admin.interface";
 import * as Yup from "yup";
-import Modal from "@base/components/common/modals/Modal";
 import { updateAdminPassword } from "../../core/api/admin.request";
 import toast from "react-hot-toast";
 type Props = {
@@ -12,13 +11,15 @@ type Props = {
 };
 
 const validateSchema = Yup.object().shape({
-    password: Yup.string().required("Şifre alanı boş bırakılamaz").min(6, "Şifre en az 6 karakter olmalıdır"),
+    password: Yup.string()
+        .required("Şifre alanı boş bırakılamaz")
+        .min(6, "Şifre en az 6 karakter olmalıdır"),
     password_confirm: Yup.string()
         .required("Şifre tekrarı alanı boş bırakılamaz")
         .oneOf([Yup.ref("password")], "Şifreler uyuşmuyor"),
 });
 
-const UpdateAdminPassword: React.FC<Props> = ({ adminId, open, onClose }) => {
+const UpdateAdminPassword: React.FC<Props> = ({ adminId, onClose }) => {
     const formik = useFormik({
         initialValues: {
             password: "",
@@ -36,7 +37,7 @@ const UpdateAdminPassword: React.FC<Props> = ({ adminId, open, onClose }) => {
 
     return (
         <form onSubmit={formik.handleSubmit}>
-            <Modal open={open} onClose={onClose}>
+            {/* <Modal open={open} onClose={onClose}>
                 <Modal.Header>
                     <h2 className="text-lg font-semibold">Şifre Güncelle</h2>
                 </Modal.Header>
@@ -64,7 +65,6 @@ const UpdateAdminPassword: React.FC<Props> = ({ adminId, open, onClose }) => {
                                 </p>
                             )}
                         </div>
-                        {/* password confirm */}
 
                         <div className="mb-3">
                             <label
@@ -108,7 +108,7 @@ const UpdateAdminPassword: React.FC<Props> = ({ adminId, open, onClose }) => {
                         </button>
                     </div>
                 </Modal.Footer>
-            </Modal>
+            </Modal> */}
         </form>
     );
 };
