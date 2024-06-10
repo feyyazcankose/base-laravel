@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Modules\Filter\FilterService;
+use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
 
 class AdminController extends Controller
@@ -24,24 +26,7 @@ class AdminController extends Controller
         }
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/backoffice/admin",
-     *     summary="Get list of admins",
-     *     tags={"Dashboard > Admin"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(ref="#/components/parameters/skip"),
-     *     @OA\Parameter(ref="#/components/parameters/take"),
-     *     @OA\Parameter(ref="#/components/parameters/sort"),
-     *     @OA\Parameter(ref="#/components/parameters/group"),
-     *     @OA\Parameter(ref="#/components/parameters/filter"),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successfully logged out"
-     *     )
-     * )
-     */
-    public function gets(Request $request)
+    public function index(Request $request)
     {
         $model = new User();
         $options = $request->all();
@@ -78,5 +63,19 @@ class AdminController extends Controller
                 'currentPage' => (int) $this->filterService->skip,
             ],
         ]);
+    }
+
+    public function store(AdminRequest $request)
+    {
+        $admin = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json([
+            'message' => 'Yönetici oluşturuldu.',
+            'admin' => $admin
+        ], 201);
     }
 }

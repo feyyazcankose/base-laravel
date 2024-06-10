@@ -21,6 +21,6 @@ Route::prefix("backoffice")->group(function () {
     });
 
     Route::prefix("admin")->group(function () {
-        Route::get('', [AdminController::class, 'gets']);
+        Route::get('', [AdminController::class, 'index']);
     });
 });
