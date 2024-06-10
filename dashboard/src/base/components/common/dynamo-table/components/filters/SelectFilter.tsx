@@ -49,6 +49,7 @@ function SelectFilter({
     const [search, setSearch] = React.useState("");
     const debouncedSearch = useDebounce(search, 300);
     const [itemResponse, setItemResponse] = React.useState<{
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         data: { key: any }[];
         totalCount: number;
     }>({
@@ -216,7 +217,7 @@ function SelectFilter({
                 next={fetchMoreData}
                 hasMore={hasMore}
                 loader={<h4>Loading...</h4>}
-                endMessage={<p>No more items</p>}
+                endMessage={<p className="mt-3">Başka öğe yok</p>}
                 height={200}
             >
                 {itemResponse.data.map((item) => (

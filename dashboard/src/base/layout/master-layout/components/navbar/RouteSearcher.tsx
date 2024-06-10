@@ -55,7 +55,9 @@ function RouteSearcher() {
             } else if (item.type === "menu") {
                 return item.items.some((subItem) => {
                     if (subItem.type === "single") {
-                        return subItem.title.toLowerCase().includes(keyword.toLowerCase());
+                        return subItem.title
+                            .toLowerCase()
+                            .includes(keyword.toLowerCase());
                     } else if (subItem.type === "collapse") {
                         return subItem.items.some((collapseItem) => {
                             return collapseItem.title
@@ -93,7 +95,7 @@ function RouteSearcher() {
             }
 
             if (!item?.type) {
-                let temp: ISidebarItem = item;
+                const temp: ISidebarItem = item;
                 updatedRecentSearches.unshift({
                     id: temp.id,
                     title: temp.title,
@@ -120,7 +122,11 @@ function RouteSearcher() {
                 variant="shadow"
                 className="gap-4"
                 startContent={
-                    <Icon width="1.2rem" height="1.2rem" icon="gravity-ui:magnifier" />
+                    <Icon
+                        width="1.2rem"
+                        height="1.2rem"
+                        icon="gravity-ui:magnifier"
+                    />
                 }
                 endContent={
                     <Kbd>
@@ -128,7 +134,7 @@ function RouteSearcher() {
                     </Kbd>
                 }
             >
-                Search...
+                Arama...
             </Button>
             <Modal
                 size="lg"
@@ -145,9 +151,13 @@ function RouteSearcher() {
                         <ModalBody className="px-0">
                             <Command label="Command Menu" loop>
                                 <div className="flex items-center w-full px-4 border-b border-default-400/50 dark:border-default-100">
-                                    <Icon icon="ep:search" width="1.2rem" height="1.2rem" />
+                                    <Icon
+                                        icon="ep:search"
+                                        width="1.2rem"
+                                        height="1.2rem"
+                                    />
                                     <Command.Input
-                                        placeholder="Quick search..."
+                                        placeholder="Hızlı arama..."
                                         value={searchKeyword}
                                         onValueChange={handleInputChange}
                                         autoFocus
@@ -174,15 +184,19 @@ function RouteSearcher() {
                                     <Command.Empty className="h-36 flex justify-center items-center">
                                         No results found.
                                     </Command.Empty>
-                                    {recentSearches.length > 0 && searchedResults.length > 0 && (
-                                        <Command.Separator className="text-default-500 mb-2">
-                                            Recent
-                                        </Command.Separator>
-                                    )}
+                                    {recentSearches.length > 0 &&
+                                        searchedResults.length > 0 && (
+                                            <Command.Separator className="text-default-500 mb-2">
+                                                Recent
+                                            </Command.Separator>
+                                        )}
                                     {searchedResults.map((item) => {
                                         if (item.type === "single") {
                                             return (
-                                                <Command.Item className="mb-2" key={item.id}>
+                                                <Command.Item
+                                                    className="mb-2"
+                                                    key={item.id}
+                                                >
                                                     <Button
                                                         as={Link}
                                                         href={item.to}
@@ -191,7 +205,9 @@ function RouteSearcher() {
                                                         variant="bordered"
                                                         startContent={
                                                             <div className="flex justify-start items-center gap-2">
-                                                                <span>{item.title}</span>
+                                                                <span>
+                                                                    {item.title}
+                                                                </span>
                                                             </div>
                                                         }
                                                         endContent={
@@ -201,7 +217,11 @@ function RouteSearcher() {
                                                                 height="1.2rem"
                                                             />
                                                         }
-                                                        onClick={() => handleItemClick(item)}
+                                                        onClick={() =>
+                                                            handleItemClick(
+                                                                item
+                                                            )
+                                                        }
                                                     />
                                                 </Command.Item>
                                             );
@@ -209,16 +229,25 @@ function RouteSearcher() {
                                             return item.items.map((subItem) => {
                                                 if (subItem.type === "single") {
                                                     return (
-                                                        <Command.Item className="mb-2" key={subItem.id}>
+                                                        <Command.Item
+                                                            className="mb-2"
+                                                            key={subItem.id}
+                                                        >
                                                             <Button
                                                                 as={Link}
-                                                                href={subItem.to}
+                                                                href={
+                                                                    subItem.to
+                                                                }
                                                                 className="w-full py-8 justify-between"
                                                                 color="primary"
                                                                 variant="bordered"
                                                                 startContent={
                                                                     <div className="flex justify-start items-center gap-2">
-                                                                        <span>{subItem.title}</span>
+                                                                        <span>
+                                                                            {
+                                                                                subItem.title
+                                                                            }
+                                                                        </span>
                                                                     </div>
                                                                 }
                                                                 endContent={
@@ -228,40 +257,62 @@ function RouteSearcher() {
                                                                         height="1.2rem"
                                                                     />
                                                                 }
-                                                                onClick={() => handleItemClick(subItem)}
+                                                                onClick={() =>
+                                                                    handleItemClick(
+                                                                        subItem
+                                                                    )
+                                                                }
                                                             />
                                                         </Command.Item>
                                                     );
-                                                } else if (subItem.type === "collapse") {
-                                                    return subItem.items.map((collapseItem) => {
-                                                        return (
-                                                            <Command.Item
-                                                                className="mb-2"
-                                                                key={collapseItem.id}
-                                                            >
-                                                                <Button
-                                                                    as={Link}
-                                                                    href={collapseItem.to}
-                                                                    className="w-full py-8 justify-between"
-                                                                    color="primary"
-                                                                    variant="bordered"
-                                                                    startContent={
-                                                                        <div className="flex justify-start items-center gap-2">
-                                                                            <span>{collapseItem.title}</span>
-                                                                        </div>
+                                                } else if (
+                                                    subItem.type === "collapse"
+                                                ) {
+                                                    return subItem.items.map(
+                                                        (collapseItem) => {
+                                                            return (
+                                                                <Command.Item
+                                                                    className="mb-2"
+                                                                    key={
+                                                                        collapseItem.id
                                                                     }
-                                                                    endContent={
-                                                                        <Icon
-                                                                            icon="mingcute:right-line"
-                                                                            width="1.2rem"
-                                                                            height="1.2rem"
-                                                                        />
-                                                                    }
-                                                                    onClick={() => handleItemClick(collapseItem)}
-                                                                />
-                                                            </Command.Item>
-                                                        );
-                                                    });
+                                                                >
+                                                                    <Button
+                                                                        as={
+                                                                            Link
+                                                                        }
+                                                                        href={
+                                                                            collapseItem.to
+                                                                        }
+                                                                        className="w-full py-8 justify-between"
+                                                                        color="primary"
+                                                                        variant="bordered"
+                                                                        startContent={
+                                                                            <div className="flex justify-start items-center gap-2">
+                                                                                <span>
+                                                                                    {
+                                                                                        collapseItem.title
+                                                                                    }
+                                                                                </span>
+                                                                            </div>
+                                                                        }
+                                                                        endContent={
+                                                                            <Icon
+                                                                                icon="mingcute:right-line"
+                                                                                width="1.2rem"
+                                                                                height="1.2rem"
+                                                                            />
+                                                                        }
+                                                                        onClick={() =>
+                                                                            handleItemClick(
+                                                                                collapseItem
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                </Command.Item>
+                                                            );
+                                                        }
+                                                    );
                                                 }
                                             });
                                         }
