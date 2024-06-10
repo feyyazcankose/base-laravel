@@ -62,8 +62,8 @@ class AdminController extends Controller
 
         $totalCount = $model;
         if (count($where)) {
-            $query->where(...$where);
-            $totalCount->where(...$where);
+            $query->where($where);
+            $totalCount->where($where);
         }
         $totalCount = $totalCount->count();
         $items = $query->get(['id', 'name', "email", 'created_at', 'role_id']);

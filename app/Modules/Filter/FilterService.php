@@ -86,11 +86,9 @@ class FilterService extends Controller
                             $orArrSearch[] = [$column['id'], '=', $item['value'] === 'true'];
                         }
                     }
-                    $andArr[] = function ($query) use ($orArrSearch) {
-                        foreach ($orArrSearch as $orItem) {
-                            $query->orWhere($orItem[0], $orItem[1], $orItem[2]);
-                        }
-                    };
+                    foreach ($orArrSearch as $orItem) {
+                        $andArr[] = [$orItem[0], $orItem[1], $orItem[2]];
+                    }
                     break;
                 case "SELECT":
                     $orArr = [];
@@ -104,12 +102,9 @@ class FilterService extends Controller
                             }
                         };
                     } else {
-                        $andArr[] = function ($query) use ($orArr) {
-                            foreach ($orArr as $orItem) {
-                                $query->orWhere($orItem[0], $orItem[1], $orItem[2]);
-                            }
-                        };
-                        return $andArr;
+                        foreach ($orArr as $orItem) {
+                            $andArr[] = [$orItem[0], $orItem[1], $orItem[2]];
+                        }
                     }
                     break;
                 case 'NUMBER':
