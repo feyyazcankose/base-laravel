@@ -61,12 +61,10 @@ function SelectFilter({
     const [skip, setSkip] = React.useState(1);
     const take = 20; // number of items to fetch per request
 
-
     React.useEffect(() => {
-        if(itemResponse.data.length === localFilter.selecteds.length){
+        if (itemResponse.data.length === localFilter.selecteds.length) {
             setSelectAll(true);
-        }
-        else{
+        } else {
             setSelectAll(false);
         }
     }, [itemResponse.data, localFilter.selecteds]);
@@ -92,7 +90,7 @@ function SelectFilter({
                 setSkip(1);
                 setHasMore(
                     response.data.length < response.totalCount &&
-                    response.data.length !== 0
+                        response.data.length !== 0
                 );
                 setSaturated(response.data.length >= response.totalCount);
             });
@@ -121,11 +119,12 @@ function SelectFilter({
                 totalCount: response.totalCount,
             }));
             setHasMore(
-                itemResponse.data.length + response.data.length < response.totalCount &&
-                response.data.length !== 0
+                itemResponse.data.length + response.data.length <
+                    response.totalCount && response.data.length !== 0
             );
             setSaturated(
-                itemResponse.data.length + response.data.length >= response.totalCount
+                itemResponse.data.length + response.data.length >=
+                    response.totalCount
             );
         });
     }
@@ -135,7 +134,11 @@ function SelectFilter({
             <h4 className="text-small font-bold">{column.label} Filtrele</h4>
             <div className="flex justify-center items-center gap-1">
                 <Tooltip
-                    content={localFilter.operation === "EQUAL" ? "Equal" : "Not Equal"}
+                    content={
+                        localFilter.operation === "EQUAL"
+                            ? "Equal"
+                            : "Not Equal"
+                    }
                 >
                     <Button
                         isIconOnly
@@ -145,14 +148,24 @@ function SelectFilter({
                             setLocalFilter({
                                 ...localFilter,
                                 operation:
-                                    localFilter.operation === "EQUAL" ? "NOT_EQUAL" : "EQUAL",
+                                    localFilter.operation === "EQUAL"
+                                        ? "NOT_EQUAL"
+                                        : "EQUAL",
                             })
                         }
                     >
                         {localFilter.operation === "EQUAL" ? (
-                            <Icon icon="tabler:equal" width="1.2rem" height="1.2rem" />
+                            <Icon
+                                icon="tabler:equal"
+                                width="1.2rem"
+                                height="1.2rem"
+                            />
                         ) : (
-                            <Icon icon="tabler:equal-not" width="1.2rem" height="1.2rem" />
+                            <Icon
+                                icon="tabler:equal-not"
+                                width="1.2rem"
+                                height="1.2rem"
+                            />
                         )}
                     </Button>
                 </Tooltip>
@@ -160,9 +173,13 @@ function SelectFilter({
                     className="max-w-xs"
                     type="text"
                     isClearable
-                    placeholder="Search..."
+                    placeholder="Ara..."
                     startContent={
-                        <Icon icon="uil:search" width="1.2rem" height="1.2rem" />
+                        <Icon
+                            icon="uil:search"
+                            width="1.2rem"
+                            height="1.2rem"
+                        />
                     }
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -178,7 +195,9 @@ function SelectFilter({
                     if (e.target.checked) {
                         setLocalFilter({
                             ...localFilter,
-                            selecteds: itemResponse.data.map((item) => item.key),
+                            selecteds: itemResponse.data.map(
+                                (item) => item.key
+                            ),
                         });
                     } else {
                         setLocalFilter({
@@ -188,11 +207,11 @@ function SelectFilter({
                     }
                 }}
             >
-                Select All
+                Hepsini Seç
             </Checkbox>
             <Divider />
             <InfiniteScroll
-            className="fancy-scrollbar"
+                className="fancy-scrollbar"
                 dataLength={itemResponse.data.length}
                 next={fetchMoreData}
                 hasMore={hasMore}
@@ -204,12 +223,17 @@ function SelectFilter({
                     <div className="pt-1" key={item.key}>
                         <Checkbox
                             size="sm"
-                            isSelected={localFilter.selecteds.includes(item.key)}
+                            isSelected={localFilter.selecteds.includes(
+                                item.key
+                            )}
                             onChange={(e) => {
                                 if (e.target.checked) {
                                     setLocalFilter({
                                         ...localFilter,
-                                        selecteds: [...localFilter.selecteds, item.key],
+                                        selecteds: [
+                                            ...localFilter.selecteds,
+                                            item.key,
+                                        ],
                                     });
                                 } else {
                                     setLocalFilter({
@@ -234,9 +258,13 @@ function SelectFilter({
                     className="w-full"
                     onClick={() => {
                         setFilterChain((prev) => {
-                            if (prev.some((filter) => filter.id === column.key)) {
+                            if (
+                                prev.some((filter) => filter.id === column.key)
+                            ) {
                                 return prev.map((filter) =>
-                                    filter.id === column.key ? localFilter : filter
+                                    filter.id === column.key
+                                        ? localFilter
+                                        : filter
                                 );
                             } else {
                                 return [...prev, localFilter];

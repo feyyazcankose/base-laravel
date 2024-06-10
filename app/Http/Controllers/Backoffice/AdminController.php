@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Modules\Filter\FilterService;
 use OpenApi\Annotations as OA;
 
-class UserController extends Controller
+class AdminController extends Controller
 {
     protected $filterService;
 
@@ -26,9 +26,9 @@ class UserController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/users",
-     *     summary="Get list of users",
-     *     tags={"Dashboard > User"},
+     *     path="/api/backoffice/admin",
+     *     summary="Get list of admins",
+     *     tags={"Dashboard > Admin"},
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(ref="#/components/parameters/skip"),
      *     @OA\Parameter(ref="#/components/parameters/take"),
@@ -56,13 +56,17 @@ class UserController extends Controller
         $where = $filter["where"];
         $orderBy = $filter["orderBy"];
 
-        $query = $model::where(...$where)
-            ->orderBy(...$orderBy)
+        $query = $model::orderBy(...$orderBy)
             ->skip(($this->filterService->skip - 1) * $this->filterService->take)
             ->take($this->filterService->take);
 
+        $totalCount = $model;
+        if (count($where)) {
+            $query->where(...$where);
+            $totalCount->where(...$where);
+        }
+        $totalCount = $totalCount->count();
         $items = $query->get(['id', 'name', "email", 'created_at', 'role_id']);
-        $totalCount = $model::where(...$where)->count();
 
         return response()->json([
             'items' => $items,

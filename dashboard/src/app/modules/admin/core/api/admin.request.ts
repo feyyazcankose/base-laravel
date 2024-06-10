@@ -1,66 +1,72 @@
 import { FetchListParams } from "@base/enums/api.interface";
 import api from "@base/helpers/enhencers/Interceptor";
 import {
-  IAdminCreateRequest,
-  IAdminResponseP,
-  IAdminUpdatePasswordRequest,
-  IAdminUpdateRequest,
+    IAdminCreateRequest,
+    IAdminResponseP,
+    IAdminUpdatePasswordRequest,
+    IAdminUpdateRequest,
 } from "../models/admin.interface";
 import { PageableResponseModel } from "@app/core/models/app.interfaces";
 
 const API_URL = import.meta.env.VITE_API_URL;
-const PREFIX = "customer";
+const PREFIX = "admin";
 
 // Get Pageable Admins
 export function fetchAdmins({
-  skip,
-  take,
-  sort,
-  filter,
+    skip,
+    take,
+    sort,
+    filter,
 }: FetchListParams): Promise<PageableResponseModel<IAdminResponseP>> {
-  return api.get(`${API_URL}/api/backoffice/${PREFIX}`, {
-    params: {
-      skip,
-      take,
-      sort,
-      filter,
-    },
-  });
+    return api.get(`${API_URL}/api/backoffice/${PREFIX}`, {
+        params: {
+            skip,
+            take,
+            sort,
+            filter,
+        },
+    });
 }
 
 // Add Admin
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function addAdmin(data: IAdminCreateRequest): Promise<any> {
-  return api.post(`${API_URL}/api/backoffice/${PREFIX}`, data);
+    return api.post(`${API_URL}/api/backoffice/${PREFIX}`, data);
 }
 
 // Get Single Admin
 export function getAdmin(id: number): Promise<IAdminResponseP> {
-  return api.get(`${API_URL}/api/backoffice/${PREFIX}/${id}`);
+    return api.get(`${API_URL}/api/backoffice/${PREFIX}/${id}`);
 }
 
 // Update Admin
 export function updateAdmin({
-  id,
-  data,
+    id,
+    data,
 }: {
-  id: number;
-  data: IAdminUpdateRequest;
+    id: number;
+    data: IAdminUpdateRequest;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }): Promise<any> {
-  return api.put(`${API_URL}/api/backoffice/${PREFIX}/${id}`, data);
+    return api.put(`${API_URL}/api/backoffice/${PREFIX}/${id}`, data);
 }
 
 // Delete Admin
-export function deleteAdmin(id: number): Promise<any> {
-  return api.delete(`${API_URL}/api/backoffice/${PREFIX}/${id}`);
+export function deleteAdmin(
+    id: number
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> {
+    return api.delete(`${API_URL}/api/backoffice/${PREFIX}/${id}`);
 }
 
 // Update Admin's Password
 export function updateAdminPassword({
-  id,
-  data,
+    id,
+    data,
 }: {
-  id: number;
-  data: IAdminUpdatePasswordRequest;
+    id: number;
+    data: IAdminUpdatePasswordRequest;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }): Promise<any> {
-  return api.put(`${API_URL}/api/backoffice/${PREFIX}/${id}/password`, data);
+    return api.put(`${API_URL}/api/backoffice/${PREFIX}/${id}/password`, data);
 }

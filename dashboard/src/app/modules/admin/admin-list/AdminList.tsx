@@ -44,8 +44,36 @@ const AdminList = () => {
 
     const columns: IColumn[] = [
         {
+            key: "name",
+            label: "Ad",
+            filterType: EFilterType.SELECT,
+        },
+        {
+            key: "email",
+            label: "Eposta",
+            filterType: EFilterType.SELECT,
+            customCell: (row) => (
+                <div>
+                    {row.name}
+                    <br />
+                    {row.email}
+                </div>
+            ),
+        },
+        {
+            key: "created_at",
+            label: "Oluşturma Tarihi",
+            filterType: EFilterType.DATE,
+            config: {
+                date: {
+                    format: "DD MMM YYYY, HH:mm",
+                },
+            },
+            type: EColumnType.DATE,
+        },
+        {
             type: EColumnType.OPERATIONS,
-            label: "Operations",
+            label: "İşlemler",
             operations: [
                 {
                     name: "edit",
@@ -92,100 +120,6 @@ const AdminList = () => {
                 },
             ],
         },
-        {
-            key: "image",
-            label: "",
-            type: EColumnType.IMAGE,
-        },
-        {
-            key: "company_name",
-            label: "Company",
-            filterType: EFilterType.SELECT,
-            customCell: (row) => (
-                <div>
-                    {row.company_name}
-                    <br />
-                    {row.email}
-                </div>
-            ),
-        },
-
-        {
-            key: "account_status",
-            label: "ACCOUNT STATUS",
-            type: EColumnType.CHIP,
-            filterOptions: [
-                {
-                    value: true,
-                    name: "active",
-                    label: "Active",
-                },
-                {
-                    value: false,
-                    name: "passive",
-                    label: "Inactive",
-                },
-            ],
-            config: {
-                chip: {
-                    variant: "dot",
-                    size: "sm",
-                    color: {
-                        true: "success",
-                        false: "danger",
-                    },
-                    text: {
-                        true: "Active",
-                        false: "Inactive",
-                    },
-                },
-            },
-            filterType: EFilterType.STATIC_SELECT,
-        },
-        {
-            key: "type",
-            label: "TYPE",
-            type: EColumnType.CHIP,
-            filterOptions: [
-                {
-                    value: "individual",
-                    name: "individual",
-                    label: "Individual",
-                },
-                {
-                    value: "corporate",
-                    name: "corporate",
-                    label: "Corporate",
-                },
-            ],
-            config: {
-                chip: {
-                    variant: "solid",
-                    size: "sm",
-                    color: {
-                        individual: "warning",
-                        corporate: "primary",
-                    },
-                    text: {
-                        individual: "Individual",
-                        corporate: "Corporate",
-                    },
-                },
-            },
-            filterType: EFilterType.STATIC_SELECT,
-        },
-
-        {
-            key: "created_at",
-            label: "CREATED AT",
-            filterType: EFilterType.DATE,
-            config: {
-                date: {
-                    format: "DD MMM YYYY, HH:mm",
-                },
-            },
-            type: EColumnType.DATE,
-        },
     ];
 
     if (fetchStatus === FetchStatus.IDLE) return <Loader />;
@@ -193,13 +127,16 @@ const AdminList = () => {
     return (
         adminListResponse && (
             <DynamoTable
-                filterPath="customer"
+                filterPath="admin"
                 title="Yöneticiler"
                 meta={adminListResponse?.meta}
                 columns={columns}
                 rows={adminListResponse.items}
                 loadStatus={fetchStatus}
-                searchColumns={[{ id: "company_name", type: "string" }]}
+                searchColumns={[
+                    { id: "name", type: "string" },
+                    { id: "email", type: "string" },
+                ]}
             />
         )
     );

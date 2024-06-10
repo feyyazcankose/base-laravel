@@ -259,7 +259,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                             className="max-w-xs"
                             type="text"
                             isClearable
-                            placeholder="Search..."
+                            placeholder="Ara..."
                             startContent={
                                 <Icon
                                     icon="uil:search"
@@ -271,7 +271,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                             onChange={(e) => setSearch(e.target.value)}
                             onClear={() => setSearch("")}
                         />
-                        <Tooltip content="Clear All Filters">
+                        <Tooltip content="Tüm Filtreleri Temizle">
                             <Button
                                 size="sm"
                                 color="default"
@@ -303,7 +303,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                             <PopoverContent>
                                 <div className="px-1 py-2">
                                     <div className="text-small font-bold mb-2">
-                                        Columns Visibility
+                                        Sutun Görünürlüğü
                                     </div>
                                     <div className="flex flex-col gap-1">
                                         {columns.map((column) => (

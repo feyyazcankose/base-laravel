@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Backoffice;
 
+use App\Dtos\User\UserDto;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +11,7 @@ class AuthController extends Controller
 {
     /**
      * @OA\Post(
-     *     path="/api/login",
+     *     path="/api/backoffice/login",
      *     tags={"Dashboard > Auth"},
      *     summary="User login",
      *     @OA\RequestBody(
@@ -38,12 +39,15 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return response()->json(["access_token" => 'Bearer ' . $token]);
+        return response()->json([
+            'accessToken' => $token,
+            'user' => new UserDto(auth()->user())
+        ]);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/logout",
+     *     path="/api/backoffice/logout",
      *     tags={"Dashboard > Auth"},
      *     summary="User logout",
      *     security={{"bearerAuth":{}}},
@@ -62,10 +66,10 @@ class AuthController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/me",
+     *     path="/api/backoffice/current",
      *     tags={"Dashboard > Auth"},
      *     summary="Get authenticated user details",
-     *     security="bearer",
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="User details",
@@ -77,8 +81,8 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function me()
+    public function current()
     {
-        return response()->json(Auth::user());
+        return response()->json(new UserDto(auth()->user()));
     }
 }

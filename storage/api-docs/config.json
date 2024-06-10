@@ -5,13 +5,13 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/api/login": {
+        "/api/admin/login": {
             "post": {
                 "tags": [
                     "Dashboard > Auth"
                 ],
                 "summary": "User login",
-                "operationId": "a871fffd623cec921ae2402ed39073d4",
+                "operationId": "02064f557af8baf1c24fd21c09b689f3",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -47,13 +47,13 @@
                 }
             }
         },
-        "/api/logout": {
+        "/api/admin/logout": {
             "post": {
                 "tags": [
                     "Dashboard > Auth"
                 ],
                 "summary": "User logout",
-                "operationId": "09065a38576bef522e8d1e034e934f6f",
+                "operationId": "18687458536b64e1e1c3725706529bb2",
                 "responses": {
                     "200": {
                         "description": "Successfully logged out"
@@ -66,13 +66,13 @@
                 ]
             }
         },
-        "/api/me": {
+        "/api/admin/current": {
             "get": {
                 "tags": [
                     "Dashboard > Auth"
                 ],
                 "summary": "Get authenticated user details",
-                "operationId": "70e7e6544dfe8375708bed63ac1ae549",
+                "operationId": "ffcb7e255867aeb48257ebdb0dc04358",
                 "responses": {
                     "200": {
                         "description": "User details",
@@ -99,7 +99,11 @@
                         }
                     }
                 },
-                "security": "bearer"
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/create-role": {
@@ -256,13 +260,13 @@
                 }
             }
         },
-        "/api/users": {
+        "/api/admin/users": {
             "get": {
                 "tags": [
                     "Dashboard > User"
                 ],
                 "summary": "Get list of users",
-                "operationId": "114e1fe80eb613816a1ce577a3ccf441",
+                "operationId": "286702e08359cfdc69f757c6c1534c17",
                 "parameters": [
                     {
                         "$ref": "#/components/parameters/skip"

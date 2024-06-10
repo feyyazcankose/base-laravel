@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 class FilterService extends Controller
 {
-    private $whereFilter = [];
     public $softDelete = false;
     public $skip = 1;
     public $take = 10;
@@ -58,12 +57,13 @@ class FilterService extends Controller
 
         $items = $query->get();
         $totalCount = $model::count();
-
         // Benzersiz değerlerin alınması
         $uniques = $this->getUniqueValues($items, $group[0]['selector']);
-
+        $data = array_map(function ($item) {
+            return ['key' => $item];
+        }, $uniques);
         return [
-            'items' => $uniques,
+            'data' =>  $data,
             'totalCount' => $totalCount
         ];
     }
@@ -92,7 +92,7 @@ class FilterService extends Controller
                         }
                     };
                     break;
-                case 'SELECT':
+                case "SELECT":
                     $orArr = [];
                     foreach ($item['selecteds'] as $select) {
                         $orArr[] = [$item['id'], '=', $select];
@@ -109,6 +109,7 @@ class FilterService extends Controller
                                 $query->orWhere($orItem[0], $orItem[1], $orItem[2]);
                             }
                         };
+                        return $andArr;
                     }
                     break;
                 case 'NUMBER':
@@ -124,20 +125,19 @@ class FilterService extends Controller
             }
         }
         if ($this->softDelete) {
-            $this->whereFilter = array_merge($andArr, [['deleted_at', '=', null]]);
+            return array_merge($andArr, [['deleted_at', '=', null]]);
         } else {
-            $this->whereFilter = $andArr;
+            return $andArr;
         }
     }
 
     // Get where items
-    public function getWhereFilter($options, $softDelete = true)
+    public function getWhereFilter($options)
     {
-        $this->setFilter(@$options["filter"], $softDelete);
-        $localFilter = $this->whereFilter;
-        $this->whereFilter = [];
-
-        return ["where" => $localFilter, "orderBy" => $this->getOrderBy($options)];
+        return [
+            "where" => $this->setFilter(@$options["filter"]),
+            "orderBy" => $this->getOrderBy($options)
+        ];
     }
 
     // Get selector object
