@@ -20,3 +20,6 @@ yarn-error.log
 /.vscode
 
 dashboard/node_modules
+
+public/assets
+public/index.html
