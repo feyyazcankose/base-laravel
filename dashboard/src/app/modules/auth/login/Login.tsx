@@ -68,7 +68,7 @@ const Login = () => {
                         </span>
                     </div>
                     <h1 className="text-2xl font-bold mb-1.5">
-                        Sign in to your account
+                        Hesabınıza giriş yapın
                     </h1>
                     {/* <span className="text-sm  mb-6">
                         Start your website in seconds. Don’t have an account?{" "}
@@ -88,7 +88,7 @@ const Login = () => {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <Input
                                 type="email"
-                                label="Email"
+                                label="E-posta"
                                 name="email"
                                 variant="flat"
                                 size="sm"
@@ -103,7 +103,7 @@ const Login = () => {
 
                             <Input
                                 type={isVisible ? "text" : "password"}
-                                label="Password"
+                                label="Şifre"
                                 className="animation-wiggle"
                                 name="password"
                                 variant="flat"
@@ -148,7 +148,7 @@ const Login = () => {
                                 isSelected={formik.values.rememberMe}
                                 onChange={formik.handleChange}
                             >
-                                Remember me
+                                Beni hatırla
                             </Checkbox>
                             {/* <Link
                                 href="/sifremi-unuttum"
@@ -166,7 +166,7 @@ const Login = () => {
                                 color="primary"
                                 isLoading={formik.isSubmitting}
                             >
-                                Sign into your account
+                                Hesabınıza giriş yapın
                             </Button>
                         </div>
                     </form>
