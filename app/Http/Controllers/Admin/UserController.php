@@ -52,9 +52,9 @@ class UserController extends Controller
             );
         }
 
-        $f = $this->filterService->getWhereFilter($options);
-        $where = $f["where"];
-        $orderBy = $f["orderBy"];
+        $filter = $this->filterService->getWhereFilter($options);
+        $where = $filter["where"];
+        $orderBy = $filter["orderBy"];
 
         $query = $model::where(...$where)
             ->orderBy(...$orderBy)
