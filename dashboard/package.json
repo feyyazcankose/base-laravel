@@ -5,8 +5,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "tsc && vite build && yarn move",
-        "move": "mv dist/index.html dist/assets ../public",
+        "build": "tsc && vite build && yarn cp -r dist/* ../public",
+        "move": "mv dist/* ../public",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview"
     },
