@@ -274,7 +274,7 @@ function SelectFilter({
                         setIsOpen(false);
                     }}
                 >
-                    Apply
+                    Uygula
                 </Button>
                 <Button
                     size="sm"
@@ -286,7 +286,7 @@ function SelectFilter({
                         setIsOpen(false);
                     }}
                 >
-                    Clear
+                    Temizle
                 </Button>
             </ButtonGroup>
         </div>

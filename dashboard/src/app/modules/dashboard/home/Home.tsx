@@ -8,7 +8,7 @@ export const Home = () => {
     return (
         <div className="h-full ">
             <div className="flex justify-center gap-4 xl:gap-6 lg:px-0  flex-wrap xl:flex-nowrap  max-w-[90rem] mx-auto w-full">
-                <div className="mt-6 gap-6 flex flex-col w-full">
+                <div className="gap-6 flex flex-col w-full">
                     {/* Card Section Top */}
                     <div className="flex flex-col gap-2">
                         <h3 className="text-xl font-semibold">

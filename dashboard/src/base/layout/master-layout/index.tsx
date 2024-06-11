@@ -15,36 +15,37 @@ import { NavbarWrapper } from "./components/navbar/Navbar";
  */
 
 const MasterLayout: React.FC = () => {
-  const { currentUser } = useAuth();
+    const { currentUser } = useAuth();
 
-  const [sidebarOpen, setSidebarOpen] = React.useState(false);
-  const [_, setLocked] = useLockedBody(false);
-  const handleToggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-    setLocked(!sidebarOpen);
-  };
+    const [sidebarOpen, setSidebarOpen] = React.useState(false);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, setLocked] = useLockedBody(false);
+    const handleToggleSidebar = () => {
+        setSidebarOpen(!sidebarOpen);
+        setLocked(!sidebarOpen);
+    };
 
-  const memoizedValue = React.useMemo(
-    () => ({
-      collapsed: sidebarOpen,
-      setCollapsed: handleToggleSidebar,
-    }),
-    [sidebarOpen, handleToggleSidebar]
-  );
+    const memoizedValue = React.useMemo(
+        () => ({
+            collapsed: sidebarOpen,
+            setCollapsed: handleToggleSidebar,
+        }),
+        [sidebarOpen, handleToggleSidebar]
+    );
 
-  if (!currentUser) return <Outlet />;
-  return (
-    <SidebarContext.Provider value={memoizedValue}>
-      <section className="flex">
-        <SidebarWrapper />
-        <NavbarWrapper>
-          <div className="p-8">
-            <Outlet />
-          </div>
-        </NavbarWrapper>
-      </section>
-    </SidebarContext.Provider>
-  );
+    if (!currentUser) return <Outlet />;
+    return (
+        <SidebarContext.Provider value={memoizedValue}>
+            <section className="flex">
+                <SidebarWrapper />
+                <NavbarWrapper>
+                    <div className="p-8">
+                        <Outlet />
+                    </div>
+                </NavbarWrapper>
+            </section>
+        </SidebarContext.Provider>
+    );
 };
 
 export { MasterLayout };

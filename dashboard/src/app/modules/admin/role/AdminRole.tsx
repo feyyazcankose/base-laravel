@@ -125,7 +125,7 @@ const AdminRole = () => {
                 <div>
                     {admin ? (
                         <div className=" flex flex-col justify-center items-center px-5 pt-5 w-full text-base font-semibold leading-4     max-md:mt-8">
-                            <div className="mt-6 text-center leading-[140%] text-neutral-800">
+                            <div className="mt-6 text-center leading-[140%]">
                                 {admin?.name}
                             </div>
                             <div className="justify-center px-1.5 py-1 mt-6 text-center ">
@@ -193,13 +193,13 @@ const AdminRole = () => {
                                         handleSelectAll(e.target.checked)
                                     }
                                 />
-                                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full  peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full  peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
                                 <span className="ms-3 text-sm font-medium">
                                     Tümünü Seç
                                 </span>
                             </label>
                         </div>
-                        <div className="flex gap-0 text-xs font-semibold leading-5 uppercase whitespace-nowrap text-slate-500 max-md:flex-wrap max-md:max-w-full">
+                        <div className="flex gap-0 text-xs font-semibold leading-5 uppercase whitespace-nowrap  max-md:flex-wrap max-md:max-w-full">
                             <div className="grow justify-center items-start px-3 py-5 border-t border-b-2 border-solid border-slate-200 border-opacity-70 w-fit max-md:pr-5 max-md:max-w-full">
                                 Yetki
                             </div>
@@ -213,9 +213,9 @@ const AdminRole = () => {
                                     className="flex gap-0 max-md:flex-wrap max-md:max-w-full"
                                     key={index}
                                 >
-                                    <div className="grow flex justify-between items-start px-3 py-6 border-solid border-y-[0.8px] border-b-zinc-200 text-sm leading-6 text-slate-500 w-fit max-md:pr-5 max-md:max-w-full">
+                                    <div className="grow flex justify-between items-start px-3 py-6 border-solid border-y-[0.8px] border-b-zinc-200 text-sm leading-6  w-fit max-md:pr-5 max-md:max-w-full">
                                         <div className="flex flex-col w-full md:w-1/2">
-                                            <p className="text-sm text-gray-600">
+                                            <p className="text-sm ">
                                                 {row.description}
                                             </p>
                                         </div>
@@ -233,7 +233,7 @@ const AdminRole = () => {
                                                     )
                                                 }
                                             />
-                                            <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all peer-checked:bg-red-500"></div>
+                                            <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all peer-checked:bg-green-500"></div>
                                         </label>
                                     </div>
                                 </div>

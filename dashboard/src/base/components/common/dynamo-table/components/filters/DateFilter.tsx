@@ -94,7 +94,7 @@ function DateFilter({
                         setIsOpen(false);
                     }}
                 >
-                    Apply
+                    Uygula
                 </Button>
                 <Button
                     size="sm"
@@ -106,7 +106,7 @@ function DateFilter({
                         setIsOpen(false);
                     }}
                 >
-                    Clear
+                    Temizle
                 </Button>
             </ButtonGroup>
         </div>

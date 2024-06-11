@@ -42,10 +42,10 @@ function NumberFilter({
                 onChange={(e) => {
                     setLocalFilter(
                         (prev) =>
-                        ({
-                            ...prev,
-                            min: Number(e.target.value),
-                        } as INumberFilter)
+                            ({
+                                ...prev,
+                                min: Number(e.target.value),
+                            } as INumberFilter)
                     );
                 }}
             />
@@ -58,10 +58,10 @@ function NumberFilter({
                 onChange={(e) => {
                     setLocalFilter(
                         (prev) =>
-                        ({
-                            ...prev,
-                            max: Number(e.target.value),
-                        } as INumberFilter)
+                            ({
+                                ...prev,
+                                max: Number(e.target.value),
+                            } as INumberFilter)
                     );
                 }}
             />
@@ -73,13 +73,15 @@ function NumberFilter({
                     className="w-full"
                     onClick={() => {
                         setFilterChain((prev) => [
-                            ...prev.filter((filter) => filter.id !== column.key),
+                            ...prev.filter(
+                                (filter) => filter.id !== column.key
+                            ),
                             localFilter,
                         ]);
                         setIsOpen(false);
                     }}
                 >
-                    Apply
+                    Uygula
                 </Button>
                 <Button
                     size="sm"
@@ -91,7 +93,7 @@ function NumberFilter({
                         setIsOpen(false);
                     }}
                 >
-                    Clear
+                    Temizle
                 </Button>
             </ButtonGroup>
         </div>
