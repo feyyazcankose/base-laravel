@@ -146,7 +146,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                         variant="flat"
                         onPress={handlePrevious}
                     >
-                        Previous
+                        Geri
                     </Button>
                     <Button
                         isDisabled={meta.totalPages === meta.currentPage}
@@ -154,7 +154,7 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                         variant="flat"
                         onPress={handleNext}
                     >
-                        Next
+                        İleri
                     </Button>
                 </div>
             </div>
@@ -254,7 +254,6 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                 <div className="flex justify-between items-center gap-4 flex-wrap">
                     <h2 className="text-xl font-bold mb-2">{title}</h2>
                     <div className="flex justify-end items-center gap-1">
-                        <div className="mr-8">{headerContent}</div>
                         <Input
                             className="max-w-xs"
                             type="text"
@@ -271,6 +270,8 @@ const DynamoTable: React.FC<DynamoTableProps> = ({
                             onChange={(e) => setSearch(e.target.value)}
                             onClear={() => setSearch("")}
                         />
+                        <div>{headerContent}</div>
+
                         <Tooltip content="Tüm Filtreleri Temizle">
                             <Button
                                 size="sm"

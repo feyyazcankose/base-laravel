@@ -6,7 +6,7 @@ import Loader from "@base/layout/components/loader/Loader";
 import { PageableResponseModel } from "@app/core/models/app.interfaces";
 
 import DynamoTable from "@base/components/common/dynamo-table/DynamoTable";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
     EColumnType,
     EFilterType,
@@ -15,11 +15,13 @@ import {
 } from "@base/components/common/dynamo-table/types/dynamo-table.types";
 import { ERole } from "@base/enums/role.enum";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { Button, Tooltip } from "@nextui-org/react";
 
 const AdminList = () => {
     const [adminListResponse, setAdminListResponse] = React.useState<
         PageableResponseModel<IAdminResponseP> | undefined
     >();
+    const navigate = useNavigate();
     const [fetchStatus, setFetchStatus] = React.useState<FetchStatus>(
         FetchStatus.IDLE
     );
@@ -133,6 +135,24 @@ const AdminList = () => {
                 columns={columns}
                 rows={adminListResponse.items}
                 loadStatus={fetchStatus}
+                headerContent={
+                    <Tooltip content="Yönetici Ekle">
+                        <Button
+                            size="sm"
+                            color="default"
+                            isIconOnly
+                            onClick={() => {
+                                navigate("/yoneticiler/ekle");
+                            }}
+                        >
+                            <Icon
+                                icon="lets-icons:add-round"
+                                width="1.2rem"
+                                height="1.2rem"
+                            />
+                        </Button>
+                    </Tooltip>
+                }
                 searchColumns={[
                     { id: "name", type: "string" },
                     { id: "email", type: "string" },
