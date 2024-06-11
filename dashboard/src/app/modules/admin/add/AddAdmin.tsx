@@ -50,7 +50,7 @@ const AddAdmin = () => {
                         <h2 className="text-xl font-bold">Yönetici Ekle</h2>
                     </div>
                 </CardHeader>
-                <CardBody className="p-0 pt-6">
+                <CardBody className="p-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div className="mb-3">
                             <label

@@ -35,7 +35,7 @@ export const sidebarData: (ISidebarItem | ICollapseItem | ISidebarMenu)[] = [
         title: "Yöneticiler",
         to: "/yoneticiler",
         type: "single",
-        roles: `${ERole.AdminView}`,
+        roles: `${ERole.ADMIN_VIEW}`,
     } as ISidebarItem,
     // {
     //     id: "main-menu",

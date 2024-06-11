@@ -52,12 +52,13 @@ class RoleController extends Controller
         }
 
         $search = @$request->search;
-        return Role::whereIn("name", $roles)->where(function ($query) use ($search) {
+        return Role::where(function ($query) use ($search) {
             if ($search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
             }
         })
+            // ->whereIn("name", $roles)
             ->get(["id", "name", "description"]);
     }
 

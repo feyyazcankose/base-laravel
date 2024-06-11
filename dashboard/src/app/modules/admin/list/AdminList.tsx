@@ -17,6 +17,10 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { Button, Tooltip } from "@nextui-org/react";
 import { swal } from "@base/components/common/swal/SwalAlert";
 import toast from "react-hot-toast";
+import {
+    hasPermission,
+    hasPermissionMany,
+} from "@base/helpers/permissions/permission.helper";
 
 const AdminList = () => {
     const [adminListResponse, setAdminListResponse] = React.useState<
@@ -75,7 +79,14 @@ const AdminList = () => {
             },
             type: EColumnType.DATE,
         },
-        {
+    ];
+
+    if (
+        hasPermissionMany(
+            `${ERole.ADMIN_UPDATE},${ERole.ADMIN_DELETE},${ERole.ADMIN_ROLE}`
+        )
+    ) {
+        columns.push({
             type: EColumnType.OPERATIONS,
             label: "İşlemler",
             operations: [
@@ -86,7 +97,7 @@ const AdminList = () => {
                     handle: (id: number) => {
                         navigate(`/yoneticiler/duzenle/${id}`);
                     },
-                    role: ERole.Public,
+                    role: ERole.ADMIN_UPDATE,
                 },
                 {
                     name: "delete",
@@ -108,7 +119,7 @@ const AdminList = () => {
                             }
                         });
                     },
-                    role: ERole.Public,
+                    role: ERole.ADMIN_DELETE,
                 },
                 {
                     name: "roles",
@@ -117,11 +128,11 @@ const AdminList = () => {
                     handle: (id) => {
                         navigate(`/yoneticiler/yetki/${id}`);
                     },
-                    role: ERole.Public,
+                    role: ERole.ADMIN_ROLE,
                 },
             ],
-        },
-    ];
+        });
+    }
 
     if (fetchStatus === FetchStatus.IDLE) return <Loader />;
 
@@ -135,22 +146,26 @@ const AdminList = () => {
                 rows={adminListResponse.items}
                 loadStatus={fetchStatus}
                 headerContent={
-                    <Tooltip content="Yönetici Ekle">
-                        <Button
-                            size="sm"
-                            color="default"
-                            isIconOnly
-                            onClick={() => {
-                                navigate("/yoneticiler/ekle");
-                            }}
-                        >
-                            <Icon
-                                icon="lets-icons:add-round"
-                                width="1.2rem"
-                                height="1.2rem"
-                            />
-                        </Button>
-                    </Tooltip>
+                    <React.Fragment>
+                        {hasPermission(ERole.ADMIN_CREATE) ? (
+                            <Tooltip content="Yönetici Ekle">
+                                <Button
+                                    size="sm"
+                                    color="default"
+                                    isIconOnly
+                                    onClick={() => {
+                                        navigate("/yoneticiler/ekle");
+                                    }}
+                                >
+                                    <Icon
+                                        icon="lets-icons:add-round"
+                                        width="1.2rem"
+                                        height="1.2rem"
+                                    />
+                                </Button>
+                            </Tooltip>
+                        ) : null}
+                    </React.Fragment>
                 }
                 searchColumns={[
                     { id: "name", type: "string" },

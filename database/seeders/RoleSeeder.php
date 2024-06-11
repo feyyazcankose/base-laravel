@@ -55,6 +55,10 @@ class RoleSeeder extends Seeder
                 "name" => RoleTypes::ADMIN_UPDATE,
                 "description" => "Yönetici Güncelleme"
             ],
+            [
+                "name" => RoleTypes::ADMIN_ROLE,
+                "description" => "Yönetici Rol Güncelleme"
+            ],
         ];
     }
 }
