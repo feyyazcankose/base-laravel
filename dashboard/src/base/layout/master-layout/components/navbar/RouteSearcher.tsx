@@ -182,7 +182,7 @@ function RouteSearcher() {
                                 </div>
                                 <Command.List className="px-4 mt-2 pb-4 overflow-y-auto max-h-[50vh] fancy-scrollbar">
                                     <Command.Empty className="h-36 flex justify-center items-center">
-                                        No results found.
+                                        Sonuç bulunamadı.
                                     </Command.Empty>
                                     {recentSearches.length > 0 &&
                                         searchedResults.length > 0 && (
