@@ -78,7 +78,7 @@ const AddAdmin = () => {
                                 htmlFor="email"
                                 className="block mb-2 text-sm font-normal text-gray-600 "
                             >
-                                Eposta*
+                                E-posta*
                             </label>
                             <Input
                                 type="email"

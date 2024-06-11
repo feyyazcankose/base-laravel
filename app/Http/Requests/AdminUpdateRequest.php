@@ -24,7 +24,7 @@ class AdminUpdateRequest extends FormRequest
         return [
             'name' => 'string|max:255',
             'email' => 'email',
-            'password' => 'string|min:8|confirmed',
+            'password' => 'nullable|string|min:8|confirmed',
         ];
     }
 }

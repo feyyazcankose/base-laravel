@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
-import AdminList from "./admin-list/AdminList";
-import AddAdmin from "./add-admin/AddAdmin";
-import EditAdmin from "./edit-admin/EditAdmin";
+import AdminList from "./list/AdminList";
+import AddAdmin from "./add/AddAdmin";
+import EditAdmin from "./edit/EditAdmin";
 
 const AdminsPage = () => {
     return (

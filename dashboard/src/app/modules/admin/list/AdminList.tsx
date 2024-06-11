@@ -11,7 +11,6 @@ import {
     EColumnType,
     EFilterType,
     IColumn,
-    IConditionLogic,
 } from "@base/components/common/dynamo-table/types/dynamo-table.types";
 import { ERole } from "@base/enums/role.enum";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -81,17 +80,10 @@ const AdminList = () => {
                     name: "edit",
                     icon: <Icon icon="fluent:edit-48-filled" />,
                     text: "Düzenle",
-                    handle: () => {
-                        console.log("edit");
+                    handle: (id: number) => {
+                        navigate(`/yoneticiler/duzenle/${id}`);
                     },
-                    role: ERole.AdminUpdate,
-                    conditions: [
-                        {
-                            key: "account_status",
-                            value: true,
-                            logic: IConditionLogic.EQUAL,
-                        },
-                    ],
+                    role: ERole.Public,
                 },
                 {
                     name: "delete",
@@ -100,16 +92,7 @@ const AdminList = () => {
                     handle: () => {
                         console.log("delete");
                     },
-                    role: ERole.AdminDelete,
-                },
-                {
-                    name: "adminSettings",
-                    icon: <Icon icon="tabler:lock-filled" />,
-                    text: "Yönetici Ayarları",
-                    handle: () => {
-                        console.log("adminSettings");
-                    },
-                    role: ERole.AdminUpdate,
+                    role: ERole.Public,
                 },
                 {
                     name: "password",

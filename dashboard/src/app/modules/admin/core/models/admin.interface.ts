@@ -1,13 +1,7 @@
 export interface IAdminResponseP {
-    account_status: boolean;
-    created_at: string;
     email: string;
-    first_name: string;
+    name: string;
     id: number;
-    image?: string;
-    last_name: string;
-    phone: string;
-    phone_code: string;
 }
 
 export interface IAdminCreateRequest {
@@ -18,13 +12,10 @@ export interface IAdminCreateRequest {
 }
 
 export interface IAdminUpdateRequest {
-    first_name?: string;
-    last_name?: string;
-    image: string | null;
+    name?: string;
     email?: string;
-    phone?: string;
-    phone_code?: string;
-    account_status?: boolean;
+    password: string;
+    password_confirmation: string;
 }
 
 export interface IAdminUpdatePasswordRequest {

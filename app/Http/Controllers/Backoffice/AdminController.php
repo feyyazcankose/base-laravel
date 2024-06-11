@@ -90,9 +90,7 @@ class AdminController extends Controller
             ], 404);
         }
 
-        return response()->json([
-            'admin' => new UserDto($admin)
-        ], 201);
+        return response()->json(new UserDto($admin), 201);
     }
 
     /**
