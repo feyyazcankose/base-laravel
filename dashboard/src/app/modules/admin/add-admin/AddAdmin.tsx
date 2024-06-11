@@ -84,7 +84,7 @@ const AddAdmin = () => {
                                 type="email"
                                 id="email"
                                 name="email"
-                                placeholder="ornek@konutkonfor.com"
+                                placeholder="ornek@uplide.com"
                                 value={formik.values.email}
                                 onChange={formik.handleChange}
                             />

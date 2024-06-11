@@ -11,8 +11,11 @@ Route::prefix("backoffice")->group(function () {
         Route::get('current', [AuthController::class, 'current']);
         Route::get('logout', [AuthController::class, 'logout']);
         Route::prefix("admin")->group(function () {
-            Route::get('', [AdminController::class, 'index']);
-            Route::post('', [AdminController::class, 'store']);
+            Route::get('/', [AdminController::class, 'index']);
+            Route::post('/', [AdminController::class, 'store']);
+            Route::get('/{id}', [AdminController::class, 'get']);
+            Route::put('/{id}', [AdminController::class, 'update']);
+            Route::delete('/{id}', [AdminController::class, 'delete']);
         });
     });
 });

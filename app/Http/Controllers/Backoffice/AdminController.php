@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Backoffice;
 use App\Http\Controllers\Controller;
 use App\Http\Dtos\UserDto;
 use App\Http\Requests\AdminRequest;
+use App\Http\Requests\AdminUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Modules\Filter\FilterService;
 use App\Modules\Filter\FilterTableRequest;
 use Illuminate\Support\Facades\Hash;
-use OpenApi\Annotations as OA;
 
 /**
  * @tags 2) Dashboard > Admin
@@ -76,6 +76,26 @@ class AdminController extends Controller
     }
 
     /**
+     * Get Admin
+     *
+     * Bu servis yönetici bilgilerini getirmek için kullanılmaktadır.
+     */
+    public function get(Request $request)
+    {
+        $admin = User::where("id", intval($request->route("id")))->first();
+        if (!@$admin->id) {
+            return response()->json([
+                'message' => 'Yönetici bulunamdı.',
+                'admin' => new UserDto($admin)
+            ], 404);
+        }
+
+        return response()->json([
+            'admin' => new UserDto($admin)
+        ], 201);
+    }
+
+    /**
      * Create Admin
      *
      * Bu servis yönetici oluşturmak için kullanılmaktadır.
@@ -91,6 +111,63 @@ class AdminController extends Controller
         return response()->json([
             'message' => 'Yönetici oluşturuldu.',
             'admin' => new UserDto($admin)
+        ], 201);
+    }
+
+    /**
+     * Update Admin
+     *
+     * Bu servis yönetici düzenleme için kullanılmaktadır.
+     */
+    public function update(AdminUpdateRequest $request)
+    {
+        $admin = User::where("id", intval($request->route("id")))->first();
+        if (!@$admin->id) {
+            return response()->json([
+                'message' => 'Yönetici bulunamdı!',
+            ], 422);
+        }
+
+        if (
+            @$request->email &&
+            User::where("email", $request->email)->where("id", "!=", $admin->id)->first()
+        ) {
+            return response()->json([
+                'message' => 'Yönetici eposta adresi kayıtlı!',
+            ], 422);
+        }
+
+        User::where("id", $admin->id)->update([
+            'name' => @$request->name ?? $admin->name,
+            'email' => @$request->email ?? $admin->email,
+            'password' => @$request->password ? Hash::make($request->password) : $admin->password,
+        ]);
+
+        return response()->json([
+            'message' => 'Yönetici düzenlendi.',
+        ], 201);
+    }
+
+
+    /**
+     * Delete Admin
+     *
+     * Bu servis yönetici silmeye yarar.
+     */
+    public function delete(Request $request)
+    {
+        $admin = User::where("id", intval($request->route("id")))->first();
+        if (!@$admin->id) {
+            return response()->json([
+                'message' => 'Yönetici bulunamdı.',
+                'admin' => new UserDto($admin)
+            ], 404);
+        }
+
+        $admin->delete();
+
+        return response()->json([
+            "message" => "Silme işlemi başarılı"
         ], 201);
     }
 }
