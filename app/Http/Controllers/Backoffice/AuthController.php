@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
-use App\Http\Dtos\UserDto;
+use App\Http\Dtos\AdminDto;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,14 +22,14 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
-        if (!$token = Auth::attempt($credentials)) {
+        if (!$token = Auth::guard('admin-api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $auth = auth()->user();
+        $auth = Auth::guard('admin-api')->user();
         return response()->json([
             'accessToken' => $token,
-            'user' =>  new UserDto($auth)
+            'user' =>  new AdminDto($auth)
         ]);
     }
 
@@ -56,6 +56,11 @@ class AuthController extends Controller
      */
     public function current()
     {
-        return response()->json(auth()->user());
+        // Kullanıcının kimlik doğrulaması yapılmış mı kontrol edin
+        if (!$user = Auth::guard('admin-api')->user()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return response()->json($user);
     }
 }

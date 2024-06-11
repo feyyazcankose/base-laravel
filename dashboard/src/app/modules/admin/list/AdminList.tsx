@@ -54,7 +54,7 @@ const AdminList = () => {
         },
         {
             key: "email",
-            label: "Eposta",
+            label: "E-posta",
             filterType: EFilterType.SELECT,
             customCell: (row) => (
                 <div>

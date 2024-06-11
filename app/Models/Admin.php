@@ -3,13 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Mockery\Undefined;
-use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class Admin extends Authenticatable implements JWTSubject
 {
-    use HasRoles;
     /**
      * The attributes that are mass assignable.
      */
@@ -45,7 +42,6 @@ class User extends Authenticatable implements JWTSubject
         unset($user["email_verified_at"]);
         unset($user["remember_token"]);
         unset($user["updated_at"]);
-        unset($user["role_id"]);
         return [
             'user' => $user // Eğer roller ilişkisi tanımlıysa
         ];

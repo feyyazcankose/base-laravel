@@ -7,15 +7,15 @@ return [
     | Authentication Defaults
     |--------------------------------------------------------------------------
     |
-    | This option defines the default authentication "guard" and password
-    | reset "broker" for your application. You may change these values
-    | as required, but they're a perfect start for most applications.
+    | Bu seçenek, uygulamanız için varsayılan kimlik doğrulama "guard" ve
+    | şifre sıfırlama "broker"ını tanımlar. Bu değerleri gereksinimlerinize
+    | göre değiştirebilirsiniz, ancak çoğu uygulama için mükemmel bir başlangıçtır.
     |
     */
 
     'defaults' => [
-        'guard' => 'api',
-        'passwords' => 'users',
+        'guard' => 'admin-api', // Varsayılan olarak kullanılacak guard
+        'passwords' => 'admins', // Varsayılan olarak kullanılacak şifre sıfırlama broker'ı
     ],
 
     /*
@@ -23,24 +23,29 @@ return [
     | Authentication Guards
     |--------------------------------------------------------------------------
     |
-    | Next, you may define every authentication guard for your application.
-    | Of course, a great default configuration has been defined for you
-    | which utilizes session storage plus the Eloquent user provider.
+    | Bir sonraki adımda, uygulamanız için her kimlik doğrulama guard'ını tanımlayabilirsiniz.
+    | Elbette, sizin için oturum depolama artı Eloquent kullanıcı sağlayıcısını kullanan
+    | harika bir varsayılan yapılandırma tanımlanmıştır.
     |
-    | All authentication guards have a user provider, which defines how the
-    | users are actually retrieved out of your database or other storage
-    | system used by the application. Typically, Eloquent is utilized.
+    | Tüm kimlik doğrulama guard'ları bir kullanıcı sağlayıcısına sahiptir, bu da
+    | kullanıcıların veritabanınızdan veya uygulama tarafından kullanılan diğer
+    | depolama sisteminden nasıl çıkarılacağını tanımlar. Genellikle, Eloquent kullanılır.
     |
-    | Supported: "session"
+    | Desteklenen: "session", "token"
     |
     */
 
     'guards' => [
-        'api' => [
-            'driver' => 'jwt',
-            'provider' => 'users',
-            'hash' => false,
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'admins',
         ],
+
+        'admin-api' => [
+            'driver' => 'jwt',
+            'provider' => 'admins',
+        ],
+
     ],
 
     /*
@@ -48,28 +53,23 @@ return [
     | User Providers
     |--------------------------------------------------------------------------
     |
-    | All authentication guards have a user provider, which defines how the
-    | users are actually retrieved out of your database or other storage
-    | system used by the application. Typically, Eloquent is utilized.
+    | Tüm kimlik doğrulama guard'ları bir kullanıcı sağlayıcısına sahiptir, bu da
+    | kullanıcıların veritabanınızdan veya uygulama tarafından kullanılan diğer
+    | depolama sisteminden nasıl çıkarılacağını tanımlar. Genellikle, Eloquent kullanılır.
     |
-    | If you have multiple user tables or models you may configure multiple
-    | providers to represent the model / table. These providers may then
-    | be assigned to any extra authentication guards you have defined.
+    | Birden fazla kullanıcı tablonuz veya modeliniz varsa, birden fazla sağlayıcıyı
+    | model / tabloyu temsil edecek şekilde yapılandırabilirsiniz. Bu sağlayıcılar,
+    | tanımladığınız ekstra kimlik doğrulama guard'larına atanabilir.
     |
-    | Supported: "database", "eloquent"
+    | Desteklenen: "database", "eloquent"
     |
     */
 
     'providers' => [
-        'users' => [
+        'admins' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\Admin::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
@@ -77,24 +77,24 @@ return [
     | Resetting Passwords
     |--------------------------------------------------------------------------
     |
-    | These configuration options specify the behavior of Laravel's password
-    | reset functionality, including the table utilized for token storage
-    | and the user provider that is invoked to actually retrieve users.
+    | Bu yapılandırma seçenekleri, Laravel'in şifre sıfırlama işlevselliğinin
+    | davranışını belirtir, tokaların saklanması için kullanılan tablo ve
+    | kullanıcıların gerçekten nasıl getirileceğini sağlayan kullanıcı sağlayıcısını içerir.
     |
-    | The expiry time is the number of minutes that each reset token will be
-    | considered valid. This security feature keeps tokens short-lived so
-    | they have less time to be guessed. You may change this as needed.
+    | Son kullanma süresi, her sıfırlama jetonunun geçerli sayılacağı dakika sayısıdır.
+    | Bu güvenlik özelliği, jetonların kısa ömürlü olmasını sağlar, böylece tahmin
+    | edilmesi için daha az zaman kalır. Bunu gerektiği gibi değiştirebilirsiniz.
     |
-    | The throttle setting is the number of seconds a user must wait before
-    | generating more password reset tokens. This prevents the user from
-    | quickly generating a very large amount of password reset tokens.
+    | Throttle ayarı, bir kullanıcının daha fazla şifre sıfırlama jetonu üretmeden
+    | önce beklemesi gereken saniye sayısıdır. Bu, kullanıcının çok hızlı bir şekilde
+    | çok sayıda şifre sıfırlama jetonu üretmesini önler.
     |
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+        'admins' => [
+            'provider' => 'admins',
+            'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],
@@ -105,12 +105,13 @@ return [
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
     |
-    | Here you may define the amount of seconds before a password confirmation
-    | window expires and users are asked to re-enter their password via the
-    | confirmation screen. By default, the timeout lasts for three hours.
+    | Burada, bir parola doğrulama penceresinin süresi dolmadan önceki saniye
+    | miktarını tanımlayabilirsiniz ve kullanıcıların onay ekranı aracılığıyla
+    | parolalarını yeniden girmeleri istenir. Varsayılan olarak, zaman aşımı
+    | üç saat sürer.
     |
     */
 
-    'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
+    'password_timeout' => 10800,
 
 ];

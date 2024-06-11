@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 
 class EnsureTokenIsValid
 {
@@ -15,6 +16,7 @@ class EnsureTokenIsValid
 
         try {
             $user = JWTAuth::parseToken()->authenticate();
+            Auth::guard('admin-api')->setUser($user);
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
             return response()->json(['error' => 'Token expired'], 401);
         } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {

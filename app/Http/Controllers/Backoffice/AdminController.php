@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
-use App\Http\Dtos\UserDto;
+use App\Http\Dtos\AdminDto;
 use App\Http\Requests\AdminRequest;
 use App\Http\Requests\AdminUpdateRequest;
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Modules\Filter\FilterService;
 use App\Modules\Filter\FilterTableRequest;
@@ -38,7 +38,7 @@ class AdminController extends Controller
      */
     public function index(FilterTableRequest $request)
     {
-        $model = new User();
+        $model = new Admin();
         $options = $request->all();
 
         if (!empty($options['group'])) {
@@ -61,7 +61,7 @@ class AdminController extends Controller
             $totalCount->where($where);
         }
         $totalCount = $totalCount->count();
-        $items = $query->get(['id', 'name', "email", 'created_at', 'role_id']);
+        $items = $query->get(['id', 'name', "email", 'created_at']);
 
         return response()->json([
             'items' => $items,
@@ -82,15 +82,15 @@ class AdminController extends Controller
      */
     public function get(Request $request)
     {
-        $admin = User::where("id", intval($request->route("id")))->first();
+        $admin = Admin::where("id", intval($request->route("id")))->first();
         if (!@$admin->id) {
             return response()->json([
                 'message' => 'Yönetici bulunamdı.',
-                'admin' => new UserDto($admin)
+                'admin' => new AdminDto($admin)
             ], 404);
         }
 
-        return response()->json(new UserDto($admin), 201);
+        return response()->json(new AdminDto($admin), 201);
     }
 
     /**
@@ -100,7 +100,7 @@ class AdminController extends Controller
      */
     public function store(AdminRequest $request)
     {
-        $admin = User::create([
+        $admin = Admin::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -108,7 +108,7 @@ class AdminController extends Controller
 
         return response()->json([
             'message' => 'Yönetici oluşturuldu.',
-            'admin' => new UserDto($admin)
+            'admin' => new AdminDto($admin)
         ], 201);
     }
 
@@ -119,7 +119,7 @@ class AdminController extends Controller
      */
     public function update(AdminUpdateRequest $request)
     {
-        $admin = User::where("id", intval($request->route("id")))->first();
+        $admin = Admin::where("id", intval($request->route("id")))->first();
         if (!@$admin->id) {
             return response()->json([
                 'message' => 'Yönetici bulunamdı!',
@@ -128,14 +128,14 @@ class AdminController extends Controller
 
         if (
             @$request->email &&
-            User::where("email", $request->email)->where("id", "!=", $admin->id)->first()
+            Admin::where("email", $request->email)->where("id", "!=", $admin->id)->first()
         ) {
             return response()->json([
-                'message' => 'Yönetici eposta adresi kayıtlı!',
+                'message' => 'Yönetici E-posta adresi kayıtlı!',
             ], 422);
         }
 
-        User::where("id", $admin->id)->update([
+        Admin::where("id", $admin->id)->update([
             'name' => @$request->name ?? $admin->name,
             'email' => @$request->email ?? $admin->email,
             'password' => @$request->password ? Hash::make($request->password) : $admin->password,
@@ -154,16 +154,15 @@ class AdminController extends Controller
      */
     public function delete(Request $request)
     {
-        $admin = User::where("id", intval($request->route("id")))->first();
+        $admin = Admin::where("id", intval($request->route("id")))->first();
         if (!@$admin->id) {
             return response()->json([
                 'message' => 'Yönetici bulunamdı.',
-                'admin' => new UserDto($admin)
+                'admin' => new AdminDto($admin)
             ], 404);
         }
 
-        $admin->delete();
-
+        Admin::destroy($admin->id);
         return response()->json([
             "message" => "Silme işlemi başarılı"
         ], 201);
