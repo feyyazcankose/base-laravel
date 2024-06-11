@@ -8,6 +8,7 @@ use App\Http\Requests\RoleIndexRequest;
 use App\Models\Admin;
 use App\Models\AdminRole;
 use App\Models\Role;
+use App\Models\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -69,12 +70,17 @@ class RoleController extends Controller
      */
     public function update(AdminRoleUpdateRequest $request)
     {
+        $current = Auth::guard('admin-api')->user();
         $id = intval($request->id ?? "0");
         $roles = $request->roles ?? [];
 
         $admin = Admin::with('roles')->findOrFail($id);
         $newRoles = Role::whereIn('name', $roles)->get()->pluck('id')->toArray();
         $admin->roles()->sync($newRoles);
+
+        if ($current->id === $admin->id) {
+            Session::destroy(Session::where("admin_id", $current->id)->pluck("id")->toArray());
+        }
 
         return response()->json([
             'status' => 'success',

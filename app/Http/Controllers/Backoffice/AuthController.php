@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Backoffice;
 use App\Http\Controllers\Controller;
 use App\Http\Dtos\AdminDto;
 use App\Http\Requests\LoginRequest;
+use App\Models\Session;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
  * @tags 1 | Dashboard > Auth
@@ -27,6 +29,14 @@ class AuthController extends Controller
         }
 
         $auth = Auth::guard('admin-api')->user();
+        Session::create([
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->header('User-Agent'),
+            'last_activity' => now(),
+            'token' => $token,
+            'admin_id' => $auth->id, // Eğer mevcutsa
+        ]);
+
         return response()->json([
             'accessToken' => $token,
             'user' =>  new AdminDto($auth)
@@ -42,7 +52,12 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        Auth::logout();
+        $token = JWTAuth::getToken();
+        JWTAuth::authenticate($token);
+
+        // Oturumu sonlandır
+        Session::where('token', $token)->delete();
+        JWTAuth::invalidate($token);
         return response()->json(['message' => 'Successfully logged out']);
     }
 
@@ -56,7 +71,6 @@ class AuthController extends Controller
      */
     public function current()
     {
-        // Kullanıcının kimlik doğrulaması yapılmış mı kontrol edin
         if (!$user = Auth::guard('admin-api')->user()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }

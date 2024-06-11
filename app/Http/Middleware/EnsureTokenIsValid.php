@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Session;
 use Closure;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,15 @@ class EnsureTokenIsValid
         } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
             return response()->json(['error' => 'Token absent'], 401);
         }
+
+        $token = JWTAuth::parseToken()->getToken();
+        $session = Session::where('token', $token)->first();
+
+        if (!$session) {
+            return response()->json(['message' => 'Oturumunuz sonlandırıldı.'], 401);
+        }
+
+        $session->update(['last_activity' => now()]);
 
         return $next($request);
     }
