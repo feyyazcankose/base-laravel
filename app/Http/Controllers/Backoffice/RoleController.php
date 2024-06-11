@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 /**
- * @tags 3) Dashboard > Role
+ * @tags 3 | Dashboard > Role
  */
 class RoleController extends Controller
 {

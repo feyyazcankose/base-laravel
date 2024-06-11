@@ -8,7 +8,7 @@ use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * @tags 1) Dashboard > Auth
+ * @tags 1 | Dashboard > Auth
  */
 class AuthController extends Controller
 {

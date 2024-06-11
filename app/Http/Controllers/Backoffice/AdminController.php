@@ -13,7 +13,7 @@ use App\Modules\Filter\FilterTableRequest;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * @tags 2) Dashboard > Admin
+ * @tags 2 | Dashboard > Admin
  */
 class AdminController extends Controller
 {
