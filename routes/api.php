@@ -3,7 +3,6 @@
 use App\Http\Controllers\Backoffice\AuthController;
 use App\Http\Controllers\Backoffice\AdminController;
 use App\Http\Controllers\Backoffice\RoleController;
-use App\Http\Middleware\AdminRoles;
 use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Support\Facades\Route;
 
