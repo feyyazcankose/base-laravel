@@ -46,4 +46,9 @@ class Admin extends Authenticatable implements JWTSubject
             'user' => $user // Eğer roller ilişkisi tanımlıysa
         ];
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'admin_roles', 'admin_id', 'role_id');
+    }
 }
