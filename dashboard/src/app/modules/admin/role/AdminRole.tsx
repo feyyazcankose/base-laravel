@@ -122,9 +122,9 @@ const AdminRole = () => {
     return (
         <div>
             <div className="flex gap-5 max-md:flex-col max-md:gap-0 relative h-[calc(100vh-8rem)] overflow-auto fancy-scrollbar pr-2">
-                <div>
+                <div className="md:sticky md:top-6 flex flex-col w-[32%] max-md:ml-0 max-md:w-full ">
                     {admin ? (
-                        <div className=" flex flex-col justify-center items-center px-5 pt-5 w-full text-base font-semibold leading-4     max-md:mt-8">
+                        <div className="flex flex-col justify-center items-center px-5 pt-5 w-full text-base font-semibold leading-4  rounded-xl border  shadow-sm max-md:mt-8">
                             <div className="mt-6 text-center leading-[140%]">
                                 {admin?.name}
                             </div>
@@ -134,7 +134,7 @@ const AdminRole = () => {
                             <div className="justify-center px-1.5 py-1 mt-6 text-center text-white whitespace-nowrap bg-primary rounded-md">
                                 {admin?.email}
                             </div>
-                            <div className="justify-center items-start self-stretch px-5 py-6 mt-5 text-xs leading-4 text-gray-400  rounded-none   max-md:px-5">
+                            <div className="justify-center items-start self-stretch px-5 py-6 mt-5 text-xs leading-4 text-gray-400 rounded-none max-md:px-5">
                                 Oluşturulma tarihi:{" "}
                                 {moment(admin?.created_at).format(
                                     "DD MMMM YYYY HH:mm:ss"
