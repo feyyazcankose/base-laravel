@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backoffice\AuthController;
 use App\Http\Controllers\Backoffice\AdminController;
 use App\Http\Controllers\Backoffice\RoleController;
+use App\Http\Middleware\AdminRoles;
 use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Support\Facades\Route;
 
@@ -12,11 +13,11 @@ Route::prefix("backoffice")->group(function () {
         Route::get('current', [AuthController::class, 'current']);
         Route::get('logout', [AuthController::class, 'logout']);
         Route::prefix("admin")->group(function () {
-            Route::get('/', [AdminController::class, 'index']);
-            Route::post('/', [AdminController::class, 'store']);
-            Route::get('/{id}', [AdminController::class, 'get']);
-            Route::put('/{id}', [AdminController::class, 'update']);
-            Route::delete('/{id}', [AdminController::class, 'delete']);
+            Route::get('/', [AdminController::class, 'index'])->middleware("AdminRoles:ADMIN_VIEW");
+            Route::post('/', [AdminController::class, 'store'])->middleware("AdminRoles:ADMIN_CREATE");
+            Route::get('/{id}', [AdminController::class, 'get'])->middleware("AdminRoles:ADMIN_VIEW");
+            Route::put('/{id}', [AdminController::class, 'update'])->middleware("AdminRoles:ADMIN_UPDATE");
+            Route::delete('/{id}', [AdminController::class, 'delete'])->middleware("AdminRoles:ADMIN_DELETE");
         });
 
         Route::prefix("role")->group(function () {

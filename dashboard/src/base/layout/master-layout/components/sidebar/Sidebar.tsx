@@ -7,6 +7,7 @@ import { SidebarMenu } from "./SidebarMenu";
 import { sidebarData } from "./sidebar.data";
 import { User } from "@nextui-org/react";
 import { useAuth } from "@app/modules/auth/core/contexts/AuthContext";
+import { hasPermission } from "@base/helpers/permissions/permission.helper";
 
 export const SidebarWrapper = () => {
     const { collapsed, setCollapsed } = useSidebarContext();
@@ -33,7 +34,10 @@ export const SidebarWrapper = () => {
                 <div className="flex flex-col justify-between h-full">
                     <div className={Sidebar.Body()}>
                         {sidebarData.map((item) => {
-                            if (item.type === "single") {
+                            if (
+                                item.type === "single" &&
+                                hasPermission(item.roles)
+                            ) {
                                 return (
                                     <SidebarItem
                                         key={item.id}
@@ -51,14 +55,20 @@ export const SidebarWrapper = () => {
                                         title={item.title}
                                     />
                                 );
-                            } else {
+                            } else if (
+                                hasPermission(item?.roles) &&
+                                item?.items.length
+                            ) {
                                 return (
                                     <SidebarMenu
                                         key={item.id}
                                         title={item.title}
                                     >
                                         {item?.items?.map((subItem) => {
-                                            if (subItem.type === "single") {
+                                            if (
+                                                subItem.type === "single" &&
+                                                hasPermission(subItem.roles)
+                                            ) {
                                                 return (
                                                     <SidebarItem
                                                         key={subItem.id}

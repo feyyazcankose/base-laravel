@@ -4,6 +4,7 @@ import {
     ISidebarItem,
     ISidebarMenu,
 } from "./sidebar.interfaces";
+import { ERole } from "@base/enums/role.enum";
 
 export const sidebarData: (ISidebarItem | ICollapseItem | ISidebarMenu)[] = [
     {
@@ -19,6 +20,7 @@ export const sidebarData: (ISidebarItem | ICollapseItem | ISidebarMenu)[] = [
             />
         ),
         to: "/anasayfa",
+        roles: `${ERole.Public}`,
     } as ISidebarItem,
     {
         id: "admin",
@@ -33,6 +35,7 @@ export const sidebarData: (ISidebarItem | ICollapseItem | ISidebarMenu)[] = [
         title: "Yöneticiler",
         to: "/yoneticiler",
         type: "single",
+        roles: `${ERole.AdminView}`,
     } as ISidebarItem,
     // {
     //     id: "main-menu",
