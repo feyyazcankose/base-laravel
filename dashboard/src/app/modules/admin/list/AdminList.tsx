@@ -111,13 +111,13 @@ const AdminList = () => {
                     role: ERole.Public,
                 },
                 {
-                    name: "password",
+                    name: "roles",
                     icon: <Icon icon="bx:bxs-lock-alt" />,
-                    text: "Şifre Güncelle",
-                    handle: () => {
-                        console.log("password");
+                    text: "Yetkiler",
+                    handle: (id) => {
+                        navigate(`/yoneticiler/yetki/${id}`);
                     },
-                    role: ERole.AdminUpdate,
+                    role: ERole.Public,
                 },
             ],
         },

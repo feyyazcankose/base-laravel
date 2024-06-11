@@ -15,6 +15,12 @@ class Admin extends Authenticatable implements JWTSubject
         'email',
         'password',
     ];
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'admin_roles', 'admin_id', 'role_id');
+    }
+
     // JWTSubject interface methods
     public function getJWTIdentifier()
     {
@@ -25,30 +31,20 @@ class Admin extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         $user = $this;
-        $user["roles"] = [
-            "AdminView",
-            "AdminCreate",
-            "AdminUpdate",
-            "AdminDelete",
-            "AdminRole",
-            "UserView",
-            "UserCreate",
-            "UserUpdate",
-            "UserDelete",
-            "ContractView",
-        ];
+        $roles = [];
+        foreach ($this->roles as $role) {
+            array_push($roles, $role->name);
+        }
 
         unset($user["password"]);
         unset($user["email_verified_at"]);
         unset($user["remember_token"]);
         unset($user["updated_at"]);
-        return [
-            'user' => $user // Eğer roller ilişkisi tanımlıysa
-        ];
-    }
+        unset($user["roles"]);
+        $user["roles"] = $roles;
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class, 'admin_roles', 'admin_id', 'role_id');
+        return [
+            'user' => $user
+        ];
     }
 }
