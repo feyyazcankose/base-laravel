@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Backoffice;
 
 use App\Http\Controllers\Controller;
+use App\Http\Dtos\UserDto;
 use App\Http\Requests\AdminRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Modules\Filter\FilterService;
+use App\Modules\Filter\FilterTableRequest;
 use Illuminate\Support\Facades\Hash;
 use OpenApi\Annotations as OA;
 
+/**
+ * @tags 2) Dashboard > Admin
+ */
 class AdminController extends Controller
 {
     protected $filterService;
@@ -26,7 +31,12 @@ class AdminController extends Controller
         }
     }
 
-    public function index(Request $request)
+    /**
+     * List Admin
+     *
+     * Bu servis yönetici listelemek için kullanılmaktadır. Pagianble bir şekilde listeler
+     */
+    public function index(FilterTableRequest $request)
     {
         $model = new User();
         $options = $request->all();
@@ -65,6 +75,11 @@ class AdminController extends Controller
         ]);
     }
 
+    /**
+     * Create Admin
+     *
+     * Bu servis yönetici oluşturmak için kullanılmaktadır.
+     */
     public function store(AdminRequest $request)
     {
         $admin = User::create([
@@ -75,7 +90,7 @@ class AdminController extends Controller
 
         return response()->json([
             'message' => 'Yönetici oluşturuldu.',
-            'admin' => $admin
+            'admin' => new UserDto($admin)
         ], 201);
     }
 }

@@ -313,19 +313,6 @@
                     "type": "string"
                 }
             }
-        },
-        "securitySchemes": {
-            "bearerAuth": {
-                "type": "apiKey",
-                "name": "Authorization",
-                "in": "header",
-                "description": "Enter token in format (Bearer <token>)"
-            }
         }
-    },
-    "security": [
-        {
-            "Bearer": []
-        }
-    ]
+    }
 }

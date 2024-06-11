@@ -1,7 +1,5 @@
 async function setup() {
-    let configJ = await fetch("/config-json").then((response) =>
-        response.json()
-    );
+    let configJ = await fetch("/api.json").then((response) => response.json());
 
     docContainer.innerHTML = `<elements-api  data-theme='dark' apidescriptiondocument='${JSON.stringify(
         configJ

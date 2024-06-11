@@ -67,8 +67,12 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Open Api 3.0 generate json
 
-`php artisan l5-swagger:generate`
+` php artisan scramble:export`
 
 ## Laravel Seed Command
 
 `php artisan db:seed`
+
+## Laravel Validate Class
+
+`php artisan make:request LoginRequest`
