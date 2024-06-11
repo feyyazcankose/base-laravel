@@ -1,6 +1,6 @@
 import React from "react";
 import { FetchStatus } from "@base/enums/api.enum";
-import { fetchAdmins } from "../core/api/admin.request";
+import { deleteAdmin, fetchAdmins } from "../core/api/admin.request";
 import { IAdminResponseP } from "../core/models/admin.interface";
 import Loader from "@base/layout/components/loader/Loader";
 import { PageableResponseModel } from "@app/core/models/app.interfaces";
@@ -15,6 +15,8 @@ import {
 import { ERole } from "@base/enums/role.enum";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Button, Tooltip } from "@nextui-org/react";
+import { swal } from "@base/components/common/swal/SwalAlert";
+import toast from "react-hot-toast";
 
 const AdminList = () => {
     const [adminListResponse, setAdminListResponse] = React.useState<
@@ -30,6 +32,7 @@ const AdminList = () => {
     const take = parseInt(searchParams.get("take") ?? "10");
     const sort = searchParams.get("sort") ?? undefined;
     const filter = searchParams.get("filter") ?? "[]";
+    const [tableAction, setTableAction] = React.useState<string>("");
 
     React.useEffect(() => {
         setFetchStatus(FetchStatus.LOADING);
@@ -41,7 +44,7 @@ const AdminList = () => {
             .catch(() => {
                 setFetchStatus(FetchStatus.FAILED);
             });
-    }, [skip, take, sort, filter]);
+    }, [skip, take, sort, filter, tableAction]);
 
     const columns: IColumn[] = [
         {
@@ -89,8 +92,21 @@ const AdminList = () => {
                     name: "delete",
                     icon: <Icon icon="ic:round-delete" />,
                     text: "Sil",
-                    handle: () => {
-                        console.log("delete");
+                    handle: (id) => {
+                        swal.fire({
+                            title: "Yöneticiyı silmek istediğinize emin misiniz?",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Evet",
+                            cancelButtonText: "Hayır",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                deleteAdmin(id).then(() => {
+                                    toast.success("Yönetici başarıyla silindi");
+                                    setTableAction(`delete_${id}`);
+                                });
+                            }
+                        });
                     },
                     role: ERole.Public,
                 },
