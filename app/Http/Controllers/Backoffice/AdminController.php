@@ -50,6 +50,7 @@ class AdminController extends Controller
         $items = $query
             ->take($this->filterService->take)
             ->skip(($this->filterService->skip - 1) * $this->filterService->take)
+            // ->with(["adminInfo"])
             ->get(['id', 'name', "email", 'created_at']);
 
         return response()->json([

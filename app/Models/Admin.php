@@ -47,4 +47,9 @@ class Admin extends Authenticatable implements JWTSubject
             'user' => $user
         ];
     }
+
+    public function adminInfo()
+    {
+        return $this->hasOne(adminInfo::class);
+    }
 }
