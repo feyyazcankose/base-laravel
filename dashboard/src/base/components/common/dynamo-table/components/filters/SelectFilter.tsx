@@ -4,7 +4,6 @@ import {
     Checkbox,
     Divider,
     Input,
-    Tooltip,
 } from "@nextui-org/react";
 import React from "react";
 import {

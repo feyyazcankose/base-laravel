@@ -37,55 +37,19 @@ export const sidebarData: (ISidebarItem | ICollapseItem | ISidebarMenu)[] = [
         type: "single",
         roles: `${ERole.ADMIN_VIEW}`,
     } as ISidebarItem,
-    // {
-    //     id: "main-menu",
-    //     title: "Modüller",
-    //     type: "menu",
-    //     items: [
-    //         {
-    //             id: "admin",
-    //             icon: (
-    //                 <Icon
-    //                     icon="mdi:accounts"
-    //                     width="1.2rem"
-    //                     height="1.2rem"
-    //                     className="text-gray-400 dark:text-gray-200"
-    //                 />
-    //             ),
-    //             title: "Yöneticiler",
-    //             to: "/yoneticiler",
-    //             type: "single",
-    //         } as ISidebarItem,
-    //         {
-    //             id: "balances",
-    //             icon: (
-    //                 <Icon
-    //                     icon="ic:baseline-account-balance-wallet"
-    //                     width="1.2rem"
-    //                     height="1.2rem"
-    //                     className="text-gray-400 dark:text-gray-200"
-    //                 />
-    //             ),
-    //             title: "Balances",
-    //             items: [
-    //                 {
-    //                     id: "bank-accounts",
-    //                     title: "Banks Accounts",
-    //                     to: "/banks-accounts",
-    //                 },
-    //                 {
-    //                     id: "credit-cards",
-    //                     title: "Credit Cards",
-    //                     to: "/credit-cards",
-    //                 },
-    //                 {
-    //                     id: "loans",
-    //                     title: "Loans",
-    //                     to: "/loans",
-    //                 },
-    //             ],
-    //             type: "collapse",
-    //         } as ICollapseItem,
-    //     ],
-    // } as ISidebarMenu,
+    {
+        id: "file-mananer",
+        icon: (
+            <Icon
+                icon="gravity-ui:folder-fill"
+                width="1.2rem"
+                height="1.2rem"
+                className="text-gray-400 dark:text-gray-200"
+            />
+        ),
+        title: "Dosya Yöneticisi",
+        to: "/dosya-yoneticisi",
+        type: "single",
+        roles: `${ERole.ADMIN_VIEW}`,
+    } as ISidebarItem,
 ];
