@@ -3,6 +3,7 @@
 namespace App\Modules\Filter;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class FilterService extends Controller
@@ -36,10 +37,11 @@ class FilterService extends Controller
         }
 
         if (isset($group[0]['filter'])) {
-            $this->setFilter(json_encode($group[0]['filter']));
+            $query = $this->setFilter(json_encode($group[0]['filter']), $model)->select($selector);
+        } else {
+            $query = $model::select($selector);
         }
 
-        $query = $model::select($selector);
 
         if ($where) {
             $query->where(...$where);
@@ -50,14 +52,12 @@ class FilterService extends Controller
                 ->take($this->take);
         }
 
-        // Soft delete kontrolü
         if ($this->softDelete ?? true) {
             $query->whereNull('deleted_at');
         }
 
         $items = $query->get();
         $totalCount = $model::count();
-        // Benzersiz değerlerin alınması
         $uniques = $this->getUniqueValues($items, $group[0]['selector']);
         $data = array_map(function ($item) {
             return ['key' => $item];
@@ -69,70 +69,74 @@ class FilterService extends Controller
     }
 
     // Set filter method
-    public function setFilter($filter)
+    public function setFilter($filter, $query = null)
     {
         $items = json_decode($filter ?? '[]', true);
-        $andArr = [];
-        foreach ($items as $item) {
-            switch ($item['type']) {
-                case 'SEARCH':
-                    $orArrSearch = [];
-                    foreach ($item['columns'] as $column) {
-                        if (is_numeric($item['value']) && $column['type'] === 'number') {
-                            $orArrSearch[] = [$column['id'], '=', (int)$item['value']];
-                        } elseif ($column['type'] === 'string') {
-                            $orArrSearch[] = [$column['id'], 'LIKE', '%' . $item['value'] . '%'];
-                        } elseif (in_array($item['value'], ['true', 'false']) && $column['type'] === 'boolean') {
-                            $orArrSearch[] = [$column['id'], '=', $item['value'] === 'true'];
-                        }
-                    }
-                    foreach ($orArrSearch as $orItem) {
-                        $andArr[] = [$orItem[0], $orItem[1], $orItem[2]];
-                    }
-                    break;
-                case "SELECT":
-                    $orArr = [];
-                    foreach ($item['selecteds'] as $select) {
-                        $orArr[] = [$item['id'], '=', $select];
-                    }
-                    if ($item['operation'] === 'NOT_EQUAL') {
-                        $andArr[] = function ($query) use ($orArr) {
-                            foreach ($orArr as $orItem) {
-                                $query->where($orItem[0], '!=', $orItem[2]);
+        foreach ($items as  $item) {
+            $query = $query->where(function (Builder $filterQuery) use ($item) {
+                switch ($item['type']) {
+                    case 'SEARCH':
+                        foreach ($item['columns'] as $key => $column) {
+                            if ($key === 0) {
+                                if (is_numeric($item['value']) && $column['type'] === 'number') {
+                                    $filterQuery = $filterQuery->where($column['id'], '=', (int)$item['value']);
+                                } elseif ($column['type'] === 'string') {
+                                    $filterQuery = $filterQuery->where($column['id'], 'LIKE', '%' . $item['value'] . '%');
+                                } elseif (in_array($item['value'], ['true', 'false']) && $column['type'] === 'boolean') {
+                                    $filterQuery = $filterQuery->where($column['id'], '=', $item['value'] === 'true');
+                                }
+                                continue;
                             }
-                        };
-                    } else {
-                        foreach ($orArr as $orItem) {
-                            $andArr[] = [$orItem[0], $orItem[1], $orItem[2]];
+
+                            if (is_numeric($item['value']) && $column['type'] === 'number') {
+                                $filterQuery = $filterQuery->orWhere($column['id'], '=', (int)$item['value']);
+                            } elseif ($column['type'] === 'string') {
+                                $filterQuery = $filterQuery->orWhere($column['id'], 'LIKE', '%' . $item['value'] . '%');
+                            } elseif (in_array($item['value'], ['true', 'false']) && $column['type'] === 'boolean') {
+                                $filterQuery = $filterQuery->orWhere($column['id'], '=', $item['value'] === 'true');
+                            }
                         }
-                    }
-                    break;
-                case 'NUMBER':
-                    $andArr[] = [$item['id'], '>=', $item['min'] ?? 0];
-                    $andArr[] = [$item['id'], '<=', $item['max'] ?? 0];
-                    break;
-                case 'DATE':
-                    $andArr[] = [$item['id'], '>=', $item['min'] ? new \DateTime($item['min']) : new \DateTime()];
-                    $andArr[] = [$item['id'], '<=', $item['max'] ? new \DateTime($item['max']) : new \DateTime()];
-                    break;
-                default:
-                    break;
-            }
+                        break;
+                    case "SELECT":
+                        foreach ($item['selecteds'] as $key => $select) {
+                            if ($key === 0) {
+                                $filterQuery = $filterQuery->where($item['id'], '=', $select);
+                            } else {
+                                $filterQuery = $filterQuery->orWhere($item['id'], '=', $select);
+                            }
+                        }
+                        break;
+                    case 'NUMBER':
+                        $filterQuery = $filterQuery->whereBetween(
+                            $item['id'],
+                            [
+                                @$item['min'] ?? 0,
+                                @$item['max'] ?? 0
+                            ]
+                        );
+                        break;
+                    case 'DATE':
+                        $filterQuery = $filterQuery->whereBetween(
+                            $item['id'],
+                            [
+                                @$item['min'] ? new \DateTime($item['min']) : new \DateTime(),
+                                @$item['max'] ? new \DateTime($item['max']) : new \DateTime()
+                            ]
+                        );
+                        break;
+                    default:
+                        break;
+                }
+            });
         }
-        if ($this->softDelete) {
-            return array_merge($andArr, [['deleted_at', '=', null]]);
-        } else {
-            return $andArr;
-        }
+
+        return $query;
     }
 
     // Get where items
-    public function getWhereFilter($options)
+    public function getWhereFilter($options, $query = null)
     {
-        return [
-            "where" => $this->setFilter(@$options["filter"]),
-            "orderBy" => $this->getOrderBy($options)
-        ];
+        return $this->getOrderBy($options, $this->setFilter(@$options["filter"], $query));
     }
 
     // Get selector object
@@ -175,7 +179,7 @@ class FilterService extends Controller
     }
 
     //Get order by
-    private function getOrderBy($options)
+    private function getOrderBy($options, $query)
     {
         $orderBy = [];
         try {
@@ -185,6 +189,6 @@ class FilterService extends Controller
             $orderBy = ['created_at', 'DESC'];
         }
 
-        return  $orderBy;
+        return  $query->orderBy(...$orderBy);
     }
 }

@@ -38,30 +38,19 @@ class AdminController extends Controller
      */
     public function index(FilterTableRequest $request)
     {
-        $model = new Admin();
         $options = $request->all();
-
         if (!empty($options['group'])) {
             return response()->json(
-                $this->filterService->getGroups($request, $model)
+                $this->filterService->getGroups($request, new Admin())
             );
         }
 
-        $filter = $this->filterService->getWhereFilter($options);
-        $where = $filter["where"];
-        $orderBy = $filter["orderBy"];
-
-        $query = $model::orderBy(...$orderBy)
+        $query = $this->filterService->getWhereFilter($options, new Admin());
+        $totalCount = $query->count();
+        $items = $query
+            ->take($this->filterService->take)
             ->skip(($this->filterService->skip - 1) * $this->filterService->take)
-            ->take($this->filterService->take);
-
-        $totalCount = $model;
-        if (count($where)) {
-            $query->where($where);
-            $totalCount->where($where);
-        }
-        $totalCount = $totalCount->count();
-        $items = $query->get(['id', 'name', "email", 'created_at']);
+            ->get(['id', 'name', "email", 'created_at']);
 
         return response()->json([
             'items' => $items,

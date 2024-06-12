@@ -134,7 +134,7 @@ function SelectFilter({
         <div className="flex flex-col p-2 gap-4">
             <h4 className="text-small font-bold">{column.label} Filtrele</h4>
             <div className="flex justify-center items-center gap-1">
-                <Tooltip
+                {/* <Tooltip
                     content={
                         localFilter.operation === "EQUAL"
                             ? "Equal"
@@ -169,7 +169,7 @@ function SelectFilter({
                             />
                         )}
                     </Button>
-                </Tooltip>
+                </Tooltip> */}
                 <Input
                     className="max-w-xs"
                     type="text"

@@ -34,6 +34,16 @@ class AdminUserSeeder extends Seeder
                 'name' => 'Splintern',
                 'email' => 'dev@splintern.com',
                 'password' => "123456",
+            ],
+            [
+                'name' => 'Vedat',
+                'email' => 'dev@vedat.com',
+                'password' => "123456",
+            ],
+            [
+                'name' => 'Cihan',
+                'email' => 'dev@cihan.com',
+                'password' => "123456",
             ]
         ];
     }
