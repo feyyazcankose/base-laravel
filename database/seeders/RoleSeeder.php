@@ -59,6 +59,22 @@ class RoleSeeder extends Seeder
                 "name" => RoleTypes::ADMIN_ROLE,
                 "description" => "Yönetici Rol Güncelleme"
             ],
+            [
+                "name" => RoleTypes::COMPANY_VIEW,
+                "description" => "Şirketleri görüntüleme"
+            ],
+            [
+                "name" => RoleTypes::COMPANY_CREATE,
+                "description" => "Şirket Oluşturma"
+            ],
+            [
+                "name" => RoleTypes::COMPANY_DELETE,
+                "description" => "Şirket Silme"
+            ],
+            [
+                "name" => RoleTypes::COMPANY_UPDATE,
+                "description" => "Şirket Güncelleme"
+            ],
         ];
     }
 }

@@ -15,6 +15,11 @@ class RoleTypes
     const ADMIN_UPDATE = 'ADMIN_UPDATE';
     const ADMIN_DELETE = 'ADMIN_DELETE';
 
+    const COMPANY_VIEW = 'COMPANY_VIEW';
+    const COMPANY_CREATE = 'COMPANY_CREATE';
+    const COMPANY_UPDATE = 'COMPANY_UPDATE';
+    const COMPANY_DELETE = 'COMPANY_DELETE';
+
 
     public static function getValues()
     {
@@ -28,6 +33,10 @@ class RoleTypes
             self::ADMIN_CREATE,
             self::ADMIN_UPDATE,
             self::ADMIN_DELETE,
+            self::COMPANY_VIEW,
+            self::COMPANY_CREATE,
+            self::COMPANY_UPDATE,
+            self::COMPANY_DELETE,
         ];
     }
 }
