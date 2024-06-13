@@ -8,6 +8,9 @@ const PrivateRoutes = () => {
     const DashboardPage = React.lazy(
         () => import("@app/modules/dashboard/DashboardPage")
     );
+    const ProfilePage = React.lazy(
+        () => import("@app/modules/profile/ProfilePage")
+    );
     const AdminPage = React.lazy(() => import("@app/modules/admin/AdminsPage"));
     const FileManagerPage = React.lazy(
         () => import("@app/modules/file-manager/FileManagerPage")
@@ -36,6 +39,14 @@ const PrivateRoutes = () => {
                 element={
                     <SuspensedView>
                         <ProjectsPage />
+                    </SuspensedView>
+                }
+            />
+            <Route
+                path="hesabim/*"
+                element={
+                    <SuspensedView>
+                        <ProfilePage />
                     </SuspensedView>
                 }
             />

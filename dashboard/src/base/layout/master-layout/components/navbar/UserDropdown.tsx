@@ -8,6 +8,7 @@ import {
 } from "@nextui-org/react";
 import { useAuth } from "@app/modules/auth/core/contexts/AuthContext";
 import { DarkModeSwitch } from "./DarkModeSwitch";
+import { Link } from "react-router-dom";
 export const UserDropdown = () => {
     const { currentUser, logout } = useAuth();
     return (
@@ -17,7 +18,6 @@ export const UserDropdown = () => {
                     <Avatar
                         as="button"
                         color="success"
-                        // name should be currentUser?.first_name's first letter + currentUser?.last_name's first letter
                         name={
                             currentUser?.name?.charAt(0) ??
                             "" + currentUser?.name.split(" ")?.[1]?.charAt(0) ??
@@ -39,7 +39,9 @@ export const UserDropdown = () => {
                     <p>Olarak giriş yapıldı</p>
                     <p>{currentUser?.email}</p>
                 </DropdownItem>
-                <DropdownItem key="settings">Hesabım</DropdownItem>
+                <DropdownItem key="settings">
+                    <Link to="/hesabim">Hesabım</Link>
+                </DropdownItem>
                 <DropdownItem
                     onClick={() =>
                         logout({

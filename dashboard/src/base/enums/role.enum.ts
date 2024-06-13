@@ -10,6 +10,7 @@ export class ERole {
 
 export class ERolePath {
     static readonly "/anasayfa" = ERole.Public;
+    static readonly "/hesabim" = ERole.Public;
     static readonly "/projeler" = ERole.Public;
     static readonly "/projeler/ekle" = ERole.Public;
     static readonly "/yoneticiler" = ERole.ADMIN_VIEW;
