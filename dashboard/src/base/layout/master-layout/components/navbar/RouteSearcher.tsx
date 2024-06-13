@@ -119,7 +119,6 @@ function RouteSearcher() {
         <React.Fragment>
             <Button
                 onClick={onOpen}
-                variant="shadow"
                 className="gap-4"
                 startContent={
                     <Icon

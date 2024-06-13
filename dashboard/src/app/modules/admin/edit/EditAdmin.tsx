@@ -68,7 +68,7 @@ const EditAdmin = () => {
 
     return (
         <form onSubmit={formik.handleSubmit}>
-            <Card className="w-full p-4">
+            <Card className="w-full p-4 shadow-sm" shadow="none">
                 <CardHeader className="flex gap-3 pl-4">
                     <div className="flex flex-col">
                         <h2 className="text-xl font-bold">Yönetici Düzenle</h2>

@@ -109,7 +109,7 @@ const AdminRole = () => {
             <div className="flex gap-5 max-md:flex-col max-md:gap-0 relative h-[calc(100vh-8rem)] overflow-auto fancy-scrollbar pr-2">
                 <div className="md:sticky md:top-6 flex flex-col w-[32%] max-md:ml-0 max-md:w-full ">
                     {admin ? (
-                        <Card className="max-w-[400px]">
+                        <Card className="max-w-[400px] shadow-sm" shadow="none">
                             <CardHeader className="flex gap-3">
                                 <Avatar
                                     as="button"
@@ -152,6 +152,8 @@ const AdminRole = () => {
                         selectionMode="multiple"
                         selectedKeys={selectedRoles as any}
                         aria-label="Example static collection table"
+                        shadow="none"
+                        className="shadow-sm p-0"
                         onSelectionChange={(keys) => {
                             if (keys === "all") {
                                 setSelectedRoles(
@@ -196,7 +198,6 @@ const AdminRole = () => {
                                 </div>
                             </div>
                         }
-                        className="p-0"
                     >
                         <TableHeader>
                             <TableColumn>YETKİ</TableColumn>

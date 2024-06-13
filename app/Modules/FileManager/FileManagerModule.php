@@ -18,7 +18,6 @@ class FileManagerModule
     public function getFile($path)
     {
         $path = public_path('media/' . $path);
-        dd($path, File::exists($path));
         if (!File::exists($path)) {
             abort(404);
         }

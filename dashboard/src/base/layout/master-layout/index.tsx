@@ -5,7 +5,6 @@ import { SidebarContext } from "@base/layout/contexts/LayoutContext";
 import { useLockedBody } from "@base/layout/hooks/useBodyLock";
 import { SidebarWrapper } from "./components/sidebar/Sidebar";
 import { NavbarWrapper } from "./components/navbar/Navbar";
-
 /**
  * @author ziyakaragoz
  * Yazilacak butun componentlerin ust yapisidir.
@@ -16,7 +15,6 @@ import { NavbarWrapper } from "./components/navbar/Navbar";
 
 const MasterLayout: React.FC = () => {
     const { currentUser } = useAuth();
-
     const [sidebarOpen, setSidebarOpen] = React.useState(false);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setLocked] = useLockedBody(false);
@@ -36,10 +34,10 @@ const MasterLayout: React.FC = () => {
     if (!currentUser) return <Outlet />;
     return (
         <SidebarContext.Provider value={memoizedValue}>
-            <section className="flex">
+            <section className="flex bg-zinc-100 dark:bg-black">
                 <SidebarWrapper />
                 <NavbarWrapper>
-                    <div className="p-8">
+                    <div className="p-8  ">
                         <Outlet />
                     </div>
                 </NavbarWrapper>
