@@ -33,7 +33,9 @@ interface DynamoFileManagerProviderProps {
     children: ReactNode;
     values: {
         selectedDirectory?: DynamoFileData;
-        setSelectedDirectory?: React.Dispatch<React.SetStateAction<DynamoFileData>>;
+        setSelectedDirectory?: React.Dispatch<
+            React.SetStateAction<DynamoFileData>
+        >;
         addDirectory?: (folder_path: string) => Promise<void>;
         uploadFile?: (pathname: string, file: File) => Promise<void>;
         renameFile?: (oldName: string, newName: string) => Promise<void>;
@@ -83,7 +85,9 @@ const defaultConfig: DynamoFileManagerConfig = {
             className: "flex justify-start items-center gap-1 pb-2 h-12",
         },
         button: {
-            icon: <Icon icon="mingcute:up-fill" width="1.2rem" height="1.2rem" />,
+            icon: (
+                <Icon icon="mingcute:up-fill" width="1.2rem" height="1.2rem" />
+            ),
         },
         table: {
             classNames: {
@@ -98,26 +102,25 @@ const defaultConfig: DynamoFileManagerConfig = {
                 actions: " ",
             },
             modal: {
-                size: "full",
+                size: "md",
                 actionButtons: {
                     cancel: {
-                        title: "Cancel"
+                        title: "Cancel",
                     },
                     pick: {
-                        title: "Pick Image"
-                    }
+                        title: "Pick Image",
+                    },
                 },
-                classNames:{
+                classNames: {
                     header: "flex flex-row items-center gap-1",
-                  },
-                  image: {
+                },
+                image: {
                     isBlurred: true,
                     width: 450,
-                  }
-            }
+                },
+            },
         },
     },
-    
 };
 
 export const DynamoFileManagerProvider: React.FC<
@@ -135,7 +138,7 @@ export const DynamoFileManagerProvider: React.FC<
         getFiles();
     }, [values.fetchFiles]);
 
-    React.useEffect(() => { }, [selectedDirectory]);
+    React.useEffect(() => {}, [selectedDirectory]);
     function getFiles() {
         values
             .fetchFiles()
@@ -147,6 +150,8 @@ export const DynamoFileManagerProvider: React.FC<
                     findDirectory(data, selectedDirectory) ||
                     data[0] ||
                     ({} as DynamoFileData);
+                console.log(data, "feuyya");
+                console.log(currentSelectedDirectory);
                 setSelectedDirectory(currentSelectedDirectory);
             })
             .catch(() => {
@@ -196,7 +201,9 @@ export const DynamoFileManagerProvider: React.FC<
 export const useFiles = () => {
     const context = useContext(DynamoFileManager);
     if (!context) {
-        throw new Error("useFiles must be used within a DynamoFileManagerProvider");
+        throw new Error(
+            "useFiles must be used within a DynamoFileManagerProvider"
+        );
     }
     return context;
 };

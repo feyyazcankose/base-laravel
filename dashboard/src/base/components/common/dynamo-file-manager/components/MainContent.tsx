@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFiles } from "../contexts/DynamoFileManagerContext";
 import {
     BreadcrumbItem,
@@ -6,6 +6,7 @@ import {
     Button,
     Divider,
     Image,
+    Input,
     Modal,
     ModalBody,
     ModalContent,
@@ -45,8 +46,21 @@ function MainContent() {
         config,
     } = useFiles();
     const [selectedRow, setSelectedRow] = React.useState<DynamoFileData>();
+    const [valueRename, setValueRename] = React.useState<string | undefined>(
+        ""
+    );
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const {
+        isOpen: isOpenRename,
+        onOpen: onOpenRename,
+        onOpenChange: onOpenChangeRename,
+    } = useDisclosure();
     const uploadInputRef = React.useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        setValueRename(selectedRow?.name);
+        console.log(selectedRow);
+    }, [selectedRow]);
 
     return (
         <div className={config?.mainContent?.className}>
@@ -273,9 +287,8 @@ function MainContent() {
                                         isIconOnly
                                         className="group"
                                         onPress={() => {
-                                            alert(
-                                                "Rename file logic goes here"
-                                            );
+                                            onOpenRename();
+                                            setSelectedRow(item);
                                         }}
                                     >
                                         <Icon
@@ -293,6 +306,7 @@ function MainContent() {
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
+                backdrop="blur"
                 size={config?.mainContent?.table?.modal?.size}
                 classNames={config?.mainContent?.table?.modal?.classNames}
             >
@@ -360,6 +374,73 @@ function MainContent() {
                                             config?.mainContent?.table?.modal
                                                 ?.actionButtons?.pick?.title
                                         }
+                                    </Button>
+                                )}
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+
+            <Modal
+                isOpen={isOpenRename}
+                onOpenChange={onOpenChangeRename}
+                backdrop="blur"
+                size={"md"}
+                classNames={config?.mainContent?.table?.modal?.classNames}
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader>Yeniden Adlandır</ModalHeader>
+                            <ModalBody>
+                                <Input
+                                    value={valueRename}
+                                    onChange={(e) =>
+                                        setValueRename(e.target.value)
+                                    }
+                                ></Input>
+                            </ModalBody>
+                            <ModalFooter>
+                                {config?.mainContent?.table?.modal
+                                    ?.actionButtons?.cancel && (
+                                    <Button
+                                        className={
+                                            config?.mainContent?.table?.modal
+                                                ?.actionButtons?.cancel
+                                                ?.className
+                                        }
+                                        color="danger"
+                                        variant="light"
+                                        onPress={onClose}
+                                    >
+                                        İptal
+                                    </Button>
+                                )}
+                                {config?.mainContent?.table?.modal
+                                    ?.actionButtons?.pick && (
+                                    <Button
+                                        className={
+                                            config?.mainContent?.table?.modal
+                                                ?.actionButtons?.pick?.className
+                                        }
+                                        color="primary"
+                                        onPress={() => {
+                                            if (
+                                                renameFile &&
+                                                selectedRow?.path &&
+                                                valueRename !== undefined
+                                            ) {
+                                                renameFile(
+                                                    selectedRow.path,
+                                                    valueRename
+                                                );
+                                            }
+
+                                            onClose();
+                                        }}
+                                    >
+                                        Düzenle
                                     </Button>
                                 )}
                             </ModalFooter>

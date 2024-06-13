@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backoffice\AuthController;
 use App\Http\Controllers\Backoffice\AdminController;
+use App\Http\Controllers\Backoffice\FileManagerController;
 use App\Http\Controllers\Backoffice\RoleController;
 use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Support\Facades\Route;
@@ -24,5 +25,11 @@ Route::prefix("backoffice")->group(function () {
             Route::get('/{id}', [RoleController::class, 'get']);
             Route::put('/{id}', [RoleController::class, 'update']);
         });
+    });
+    Route::prefix("file-manager")->group(function () {
+        Route::post('/upload', [FileManagerController::class, 'uploadFile']);
+        Route::post('/create/folder', [FileManagerController::class, 'createFolder']);
+        Route::get('/', [FileManagerController::class, 'index']);
+        Route::post('/rename', [FileManagerController::class, 'rename']);
     });
 });

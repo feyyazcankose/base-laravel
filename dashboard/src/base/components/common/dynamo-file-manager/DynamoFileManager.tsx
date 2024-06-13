@@ -5,7 +5,10 @@ import {
     DynamoFileManagerProvider,
     useFiles,
 } from "./contexts/DynamoFileManagerContext";
-import { DynamoFileData, DynamoFileManagerConfig } from "./types/dynamo-file-manager.types";
+import {
+    DynamoFileData,
+    DynamoFileManagerConfig,
+} from "./types/dynamo-file-manager.types";
 import MainContent from "./components/MainContent";
 import { FetchStatus } from "@base/enums/api.enum";
 import React from "react";
@@ -22,15 +25,24 @@ type Props = {
 };
 
 function WrappedDynamoFileManager() {
-    const { filesFetchStatus, title, selectedDirectory, config } = useFiles();
+    const { filesFetchStatus, title, selectedDirectory, config, files } =
+        useFiles();
+    console.log(
+        files,
+        Object.keys(selectedDirectory).length,
+        selectedDirectory
+    );
     return (
         <Card classNames={config?.card?.itemClasses}>
-            {filesFetchStatus !== FetchStatus.SUCCEEDED || !Object.keys(selectedDirectory).length  ? (
+            {filesFetchStatus !== FetchStatus.SUCCEEDED ||
+            !Object.keys(selectedDirectory).length ? (
                 config?.loader
             ) : (
                 <React.Fragment>
                     <CardHeader className="flex flex-col justify-start items-start gap-2 pb-2">
-                        {title && <h2 className="text-xl font-bold px-1">{title}</h2>}
+                        {title && (
+                            <h2 className="text-xl font-bold px-1">{title}</h2>
+                        )}
                         <Toolbar />
                     </CardHeader>
                     <CardBody className="flex flex-col lg:flex-row justify-between gap-2 pt-0">

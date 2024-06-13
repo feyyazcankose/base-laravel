@@ -6,6 +6,7 @@ export interface DynamoFileData {
     name: string;
     size: number;
     url: string;
+    path?: string;
 }
 
 export interface DynamoFileManagerConfig {
@@ -18,7 +19,7 @@ export interface DynamoFileManagerConfig {
         };
     };
     loader?: React.ReactNode;
-    
+
     toolbar?: {
         className?: string;
         actionsClassName?: string;
@@ -97,32 +98,42 @@ export interface DynamoFileManagerConfig {
             };
             emptyContent?: React.ReactNode;
             modal?: {
-                size?: "xl" | "xs" | "sm" | "md" | "lg" | "2xl" | "3xl" | "4xl" | "5xl" | "full" ;
+                size?:
+                    | "xl"
+                    | "xs"
+                    | "sm"
+                    | "md"
+                    | "lg"
+                    | "2xl"
+                    | "3xl"
+                    | "4xl"
+                    | "5xl"
+                    | "full";
                 classNames?: {
-                    backdrop?: string,
-                    base?: string,
-                    body?: string,
-                    closeButton?: string,
-                    footer?: string,
-                    header?: string,
-                    wrapper?: string,
-                  }
-                  image?: {
+                    backdrop?: string;
+                    base?: string;
+                    body?: string;
+                    closeButton?: string;
+                    footer?: string;
+                    header?: string;
+                    wrapper?: string;
+                };
+                image?: {
                     width?: string | number;
                     isBlurred?: boolean;
                     className?: string;
-                  }
-                  actionButtons?:{ 
+                };
+                actionButtons?: {
                     cancel?: {
                         className?: string;
                         title?: string;
-                    }
+                    };
                     pick?: {
                         className?: string;
                         title?: string;
-                    }
-                  }
-            }
+                    };
+                };
+            };
         };
     };
 }
