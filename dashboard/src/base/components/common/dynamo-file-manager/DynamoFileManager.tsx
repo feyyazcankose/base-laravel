@@ -33,7 +33,7 @@ function WrappedDynamoFileManager() {
         selectedDirectory
     );
     return (
-        <Card classNames={config?.card?.itemClasses}>
+        <Card classNames={config?.card?.itemClasses} shadow="none">
             {filesFetchStatus !== FetchStatus.SUCCEEDED ||
             !Object.keys(selectedDirectory).length ? (
                 config?.loader

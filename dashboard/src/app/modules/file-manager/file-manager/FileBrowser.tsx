@@ -11,7 +11,7 @@ import Loader from "@base/layout/components/loader/Loader";
 function FileBrowser() {
     return (
         <DynamoFileManager
-            title="File Manager"
+            title="Dosya Yöneticisi"
             addDirectory={async (folder_path) => {
                 await createFolder({ folder_path });
             }}

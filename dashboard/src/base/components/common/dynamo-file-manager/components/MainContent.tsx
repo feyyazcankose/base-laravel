@@ -132,7 +132,7 @@ function MainContent() {
                         config?.mainContent?.table?.emptyContent ?? (
                             <div className="flex flex-col justify-center items-center gap-4">
                                 <span className="text-lg text-default-800">
-                                    No files found
+                                    Hiçbir dosya bulunamadı
                                 </span>
                                 {uploadFile && (
                                     <React.Fragment>
@@ -149,7 +149,7 @@ function MainContent() {
                                                 width="1.2rem"
                                                 height="1.2rem"
                                             />
-                                            Upload File
+                                            Dosya Yükleme
                                         </Button>
                                         <input
                                             type="file"
@@ -193,7 +193,7 @@ function MainContent() {
                                         width="1.2rem"
                                         height="1.2rem"
                                     />{" "}
-                                    View Parent Directory
+                                    Ana Dizini Görüntüle
                                 </Button>
                             </div>
                         )

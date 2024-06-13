@@ -55,6 +55,11 @@ const defaultConfig: DynamoFileManagerConfig = {
             "flex items-center justify-between gap-2 w-full bg-default-50 rounded-lg py-1 px-2",
         actionsClassName: "flex items-center justify-start gap-2",
     },
+    card: {
+        itemClasses: {
+            base: "shadow-sm",
+        },
+    },
     sidebar: {
         button: {
             className:
@@ -96,19 +101,19 @@ const defaultConfig: DynamoFileManagerConfig = {
                     "h-[calc(24rem-3rem)] bg-default-50 border-0 shadow-none  rounded-lg overflow-y-auto fancy-scrollbar",
             },
             colNames: {
-                name: "NAME",
-                type: "FILE TYPE",
-                size: "FILE SIZE",
+                name: "AD",
+                type: "DOSYA TİPİ",
+                size: "DOSYA BOYUTU",
                 actions: " ",
             },
             modal: {
                 size: "md",
                 actionButtons: {
                     cancel: {
-                        title: "Cancel",
+                        title: "İptal",
                     },
                     pick: {
-                        title: "Pick Image",
+                        title: "Resmi Seç",
                     },
                 },
                 classNames: {
