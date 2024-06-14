@@ -101,6 +101,10 @@ export const SidebarWrapper = () => {
                 <User
                     name={currentUser?.name}
                     description={currentUser?.email}
+                    avatarProps={{
+                        name: currentUser?.name.charAt(0),
+                        color: "success",
+                    }}
                 />
             </div>
         </aside>

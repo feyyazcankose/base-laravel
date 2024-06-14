@@ -35,7 +35,7 @@ export function AddProject() {
                 <div className="flex gap-5 max-md:flex-col max-md:gap-0">
                     <div className="flex flex-col w-[67%] max-md:ml-0 max-md:w-full">
                         <div className="flex flex-col gap-4 max-md:mt-10 max-md:max-w-full">
-                            <Card shadow="none" className="shadow-sm p-2">
+                            <Card shadow="sm">
                                 <CardBody>
                                     <div className="grid grid-cols-1  gap-5">
                                         <div className="mb-3">
@@ -71,7 +71,7 @@ export function AddProject() {
                                     </div>
                                 </CardBody>
                             </Card>
-                            <Card shadow="none" className="shadow-sm p-2">
+                            <Card shadow="sm" className="p-2">
                                 <CardBody>
                                     <div className="grid grid-cols-1  gap-5">
                                         <div className="mb-3">
@@ -141,7 +141,7 @@ export function AddProject() {
                                                 Kullanıcılar*
                                             </label>
                                             <div className="flex flex-col justify-center self-center px-4 mt-4 text-xs font-medium leading-5 rounded-lg border border-dashed  border-stone-300 h-[138px] w-[138px]">
-                                                <div className="justify-center px-3 py-1  rounded-lg shadow-sm text-zinc-800 dark:text-neutral-400">
+                                                <div className="justify-center px-3 py-1  sm-lg  text-zinc-800 dark:text-neutral-400">
                                                     Excel Ekle
                                                 </div>
                                                 <div className="justify-center px-3 py-1 mt-2 rounded-lg bg-zinc-900 bg-opacity-0 text-neutral-600 dark:text-neutral-400">
@@ -160,7 +160,7 @@ export function AddProject() {
                                 </CardBody>
                             </Card>
 
-                            <Card shadow="none" className="shadow-sm p-2">
+                            <Card shadow="sm" className="p-2">
                                 <CardHeader>
                                     <div className="flex flex-col">
                                         <p className="text-md font-bold">
@@ -205,7 +205,7 @@ export function AddProject() {
                                 </CardFooter>
                             </Card>
 
-                            <Card shadow="none" className="shadow-sm p-2">
+                            <Card shadow="sm" className="p-2">
                                 <CardHeader>
                                     <div className="flex flex-col">
                                         <p className="text-md font-bold">
@@ -254,7 +254,7 @@ export function AddProject() {
                     </div>
                     <div className="flex flex-col ml-5 w-[33%] max-md:ml-0 max-md:w-full">
                         <div className="flex flex-col pb-20 max-md:mt-10 gap-4">
-                            <Card shadow="none" className="shadow-sm p-2">
+                            <Card shadow="sm" className=" p-2">
                                 <CardBody>
                                     <div className="mb-3">
                                         <label
@@ -280,7 +280,7 @@ export function AddProject() {
                                 </CardBody>
                             </Card>
 
-                            <Card shadow="none" className="shadow-sm p-2">
+                            <Card shadow="sm" className="p-2">
                                 <CardBody>
                                     <div className="mb-3">
                                         <label
@@ -292,6 +292,7 @@ export function AddProject() {
                                         <DateRangePicker
                                             variant="bordered"
                                             className="max-w-xs"
+                                            color="primary"
                                         />
                                     </div>
                                     <div className="mb-3">
@@ -318,7 +319,7 @@ export function AddProject() {
                                 </CardBody>
                             </Card>
 
-                            <Card shadow="none" className="shadow-sm p-2">
+                            <Card shadow="sm" className=" p-2">
                                 <CardHeader>
                                     <div className="flex flex-col">
                                         <p className="text-md font-bold">
@@ -337,7 +338,7 @@ export function AddProject() {
                                 </CardBody>
                             </Card>
 
-                            <Card shadow="none" className="shadow-sm p-2">
+                            <Card shadow="sm" className=" p-2">
                                 <CardHeader>
                                     <div className="flex flex-col">
                                         <p className="text-md font-bold">
@@ -416,7 +417,7 @@ export function AddProject() {
                                 </CardFooter>
                             </Card>
 
-                            <Card shadow="none" className="shadow-sm p-2">
+                            <Card shadow="sm" className=" p-2">
                                 <CardHeader>
                                     <div className="flex flex-col">
                                         <p className="text-md font-bold">
