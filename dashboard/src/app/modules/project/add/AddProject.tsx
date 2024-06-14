@@ -150,6 +150,13 @@ export function AddProject() {
                                             </div>
                                         </div>
                                     </div>
+                                    <Divider></Divider>
+                                    <CardFooter>
+                                        <button className="flex gap-2 items-center text-sm">
+                                            <Icon icon="ic:sharp-plus" />
+                                            <span>Hedef Grubu Ekle</span>
+                                        </button>
+                                    </CardFooter>
                                 </CardBody>
                             </Card>
 
